@@ -9,7 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Upload, User as UserIcon, Shield, Lock } from "lucide-react";
+import { Loader2, Upload, User as UserIcon, Shield, Lock, BarChart2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { getInitials } from "@/lib/utils";
 
 export default function Profile() {
@@ -180,6 +181,23 @@ export default function Profile() {
           Manage your profile information and preferences
         </p>
       </div>
+
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <BarChart2 className="h-4 w-4" />
+            Cursor Insights
+          </CardTitle>
+          <CardDescription>
+            View your AI productivity audit and set up Cursor hooks to capture usage.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/profile/cursor-insights">Open Cursor Insights</Link>
+          </Button>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 md:grid-cols-3">
         {/* Profile Picture Card */}

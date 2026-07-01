@@ -11,7 +11,7 @@ import { useSpaceBreadcrumbs } from "@/hooks/useSpaceBreadcrumbs";
 import { getSpaceFromPath } from "@/shared/config/spaces";
 import { useLocation } from "react-router-dom";
 
-const GLOBAL_PATHS = ["/profile", "/settings", "/help", "/onboarding", "/sessions"];
+const GLOBAL_PATHS = ["/profile", "/profile/cursor-insights", "/settings", "/help", "/onboarding", "/sessions"];
 
 export function SpaceBreadcrumbs() {
   const location = useLocation();

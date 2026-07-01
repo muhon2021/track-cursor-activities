@@ -126,6 +126,15 @@ export const queryKeys = {
     syncJobs: ["graphify", "syncJobs"] as const,
   },
 
+  csa: {
+    all: ["csa"] as const,
+    teamSummary: (start: string, end: string) => ["csa", "team-summary", start, end] as const,
+    reportsList: (start: string, end: string) => ["csa", "reports-list", start, end] as const,
+    userDetail: (userId: string, start: string, end: string) =>
+      ["csa", "user-detail", userId, start, end] as const,
+    ingestTokens: ["csa", "ingest-tokens"] as const,
+  },
+
   // Zoho CRM (deal-scoped cache)
   // EOS Module
   eos: {
@@ -400,6 +409,9 @@ export const invalidateKeys = {
   },
   graphify: (queryClient: any) => {
     queryClient.invalidateQueries({ queryKey: queryKeys.graphify.all });
+  },
+  csa: (queryClient: any) => {
+    queryClient.invalidateQueries({ queryKey: queryKeys.csa.all });
   },
   deals: (queryClient: any) => {
     queryClient.invalidateQueries({ queryKey: queryKeys.deals.all });

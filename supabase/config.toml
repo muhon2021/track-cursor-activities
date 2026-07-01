@@ -604,3 +604,12 @@ verify_jwt = false
 
 [functions.knowledge-file-storage]
 verify_jwt = false
+
+[functions.csa-ingest]
+verify_jwt = false
+
+[functions.csa-reports]
+verify_jwt = false
+
+[functions.csa-generate-insights]
+verify_jwt = false

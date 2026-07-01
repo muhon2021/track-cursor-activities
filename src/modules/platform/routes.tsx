@@ -36,6 +36,7 @@ import AIAgents from "@/pages/AIAgents";
 import AgentsBrowse from "@/pages/AgentsBrowse";
 import AgentDetail from "@/pages/AgentDetail";
 import PersonalKnowledge from "@/modules/knowledge/pages/PersonalKnowledge";
+import CursorInsightsPage from "@/pages/profile/CursorInsightsPage";
 
 /**
  * Public routes - no auth required
@@ -62,6 +63,7 @@ export const coreProtectedRoutes = (
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/onboarding" element={<Onboarding />} />
     <Route path="/profile" element={<Profile />} />
+    <Route path="/profile/cursor-insights" element={<CursorInsightsPage />} />
     <Route path="/settings" element={<Settings />} />
     <Route path="/settings/security" element={<AccountSecurity />} />
     <Route path="/sessions" element={<Sessions />} />

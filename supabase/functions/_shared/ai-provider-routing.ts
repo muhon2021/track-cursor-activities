@@ -33,6 +33,7 @@ export interface ChatCompletionRequest {
   max_tokens?: number
   temperature?: number
   stream?: boolean
+  response_format?: { type: 'json_object' }
 }
 
 export interface ChatCompletionResponse {
@@ -129,6 +130,23 @@ export async function getModel(
   return null
 }
 
+/** Resolve enabled chat model by provider model_id (e.g. gpt-4o) */
+export async function getModelByModelId(
+  supabase: SupabaseClient,
+  modelId: string,
+): Promise<AIModel | null> {
+  const { data, error } = await supabase
+    .from('ai_models')
+    .select('*, ai_providers(*)')
+    .eq('model_id', modelId)
+    .eq('category', 'chat')
+    .eq('enabled', true)
+    .maybeSingle()
+
+  if (error || !data) return null
+  return data as AIModel
+}
+
 // Chat completion with OpenAI
 async function chatOpenAI(
   apiKey: string,
@@ -145,6 +163,7 @@ async function chatOpenAI(
       messages: request.messages,
       temperature: request.temperature ?? 0.7,
       max_tokens: request.max_tokens ?? 1000,
+      ...(request.response_format ? { response_format: request.response_format } : {}),
     }),
   })
 

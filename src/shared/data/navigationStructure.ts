@@ -363,6 +363,7 @@ export const adminNavigation: NavGroup[] = [
     isAI: true,
     items: [
       { title: "AI Analytics", href: "/admin/ai/analytics", icon: "BarChart3" },
+      { title: "AI Productivity Audit", href: "/admin/ai/productivity-audit", icon: "BarChart2" },
       {
         title: "AI Agents",
         href: "/admin/ai/agents",

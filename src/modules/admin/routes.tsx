@@ -82,6 +82,8 @@ import AgentCategories from "@/pages/admin/ai/AgentCategories";
 import EmailDraftingPerformance from "@/pages/admin/ai/EmailDraftingPerformance";
 import DealCoaching from "@/pages/admin/ai/DealCoaching";
 import AIAnalytics from "@/pages/admin/ai/AIAnalytics";
+import ProductivityAuditPage from "@/pages/admin/ai/productivity-audit/ProductivityAuditPage";
+import ProductivityAuditUserPage from "@/pages/admin/ai/productivity-audit/ProductivityAuditUserPage";
 import KnowledgeSearch from "@/pages/admin/ai-hub/KnowledgeSearch";
 import Memory from "@/pages/admin/ai-hub/Memory";
 import { adminNotificationRoutes } from "@/modules/notifications/adminRoutes";
@@ -110,6 +112,8 @@ export const adminRoutes = (
     <Route path="/admin/ai/email-drafting" element={<EmailDraftingPerformance />} />
     <Route path="/admin/ai/deal-coaching" element={<DealCoaching />} />
     <Route path="/admin/ai/analytics" element={<AIAnalytics />} />
+    <Route path="/admin/ai/productivity-audit" element={<ProductivityAuditPage />} />
+    <Route path="/admin/ai/productivity-audit/:userId" element={<ProductivityAuditUserPage />} />
     <Route path="/admin/ai-hub/knowledge-search" element={<Navigate to="/admin/knowledge/access?tab=search" replace />} />
     <Route path="/admin/ai-hub/memory" element={<Memory />} />
     <Route path="/admin/implementation-status" element={<ImplementationStatus />} />

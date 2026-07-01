@@ -1,0 +1,28 @@
+-- pg_cron schedule for automation engine (commented — enable on Supabase Pro)
+-- SELECT cron.schedule(
+--   'automation-scheduler',
+--   '* * * * *',
+--   $$ SELECT net.http_post(
+--     url := current_setting('app.settings.supabase_url') || '/functions/v1/automation-scheduler',
+--     headers := jsonb_build_object(
+--       'Content-Type', 'application/json',
+--       'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
+--     ),
+--     body := '{}'::jsonb
+--   ) $$
+-- );
+--
+-- SELECT cron.schedule(
+--   'automation-trigger-evaluator',
+--   '* * * * *',
+--   $$ SELECT net.http_post(
+--     url := current_setting('app.settings.supabase_url') || '/functions/v1/automation-trigger-evaluator',
+--     headers := jsonb_build_object(
+--       'Content-Type', 'application/json',
+--       'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
+--     ),
+--     body := '{}'::jsonb
+--   ) $$
+-- );
+
+-- Documentation-only migration; configure cron via Supabase Dashboard or uncomment above on Pro plans.

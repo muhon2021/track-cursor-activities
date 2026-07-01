@@ -1,0 +1,1 @@
+UPDATE public.sendgrid_config SET is_enabled = true WHERE id = '37fc656d-d24f-467d-9d6f-4f129797bf0d';

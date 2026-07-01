@@ -1,0 +1,3 @@
+week,email,name,department,location,productive_time_hr,productivity_percentage,present_days
+2026-W06,jane@example.com,Jane Doe,Engineering,New York NY,36,85.5,5
+2026-W06,john@example.com,John Smith,Sales,San Francisco CA,32,80.0,5

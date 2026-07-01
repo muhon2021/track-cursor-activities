@@ -1,0 +1,113 @@
+# Build outputs and dist
+dist/
+dist-*
+*.tsbuildinfo
+.next/
+.out/
+out/
+
+# Dependencies (HUGE - 350MB)
+node_modules/
+.pnp
+.pnp.js
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Version control
+.git/
+.gitignore
+
+# IDE and editor configs
+.idea/
+.vscode/
+.DS_Store
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+
+# Logs and temporary files
+*.log
+*.logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+*.tgz
+
+# Testing and coverage
+coverage/
+.nyc_output/
+.coverage
+htmlcov/
+.pytest_cache/
+.mocha_cache/
+
+# OS files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Development and tool configs
+.lovable/
+.internal-only
+
+# Binary and media files (keep public/ but ignore large assets)
+*.mp4
+*.webm
+*.mov
+*.avi
+*.flv
+*.wmv
+*.mkv
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Database and cache files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+.cache/
+
+# Vercel and deployment
+.vercel/
+.netlify/
+dist-*
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+.tmp/
+tmp/
+
+# OS-specific
+*.DS_Store
+.AppleDouble
+.LSOverride
+.directory

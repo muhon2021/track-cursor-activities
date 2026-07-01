@@ -1,0 +1,34 @@
+# Migration Run Order - Last 48 Hours
+# =====================================
+# Run these in order if applying fresh:
+
+# Step 1: API & OAuth Layer
+supabase/migrations/20260204_api_keys.sql
+supabase/migrations/20260204_oauth_provider.sql
+
+# Step 2: Integration Providers
+supabase/migrations/20260205000000_add_google_drive_provider.sql
+
+# Step 3: Agentic AI - Core
+supabase/migrations/20260205_mcp_servers_and_tools.sql
+supabase/migrations/20260205_agent_multi_step_execution.sql
+supabase/migrations/20260205_agent_memory_system.sql
+
+# Step 4: Safety & Governance
+supabase/migrations/20260206_guardrails_safety.sql
+supabase/migrations/20260206_multi_agent_hitl.sql
+
+# SKIP THESE (Duplicates with IF NOT EXISTS):
+# - 20260206042320_*.sql
+# - 20260206042419_*.sql
+# - 20260206042526_*.sql
+# - 20260206093132_*.sql
+
+# Dependencies:
+# - All require: profiles, ai_agents tables
+# - agent_memory requires: vector extension
+# - guardrails requires: agent_execution_steps
+# - multi_agent requires: agent_execution_plans
+
+# To run via CLI:
+# npx supabase db push --include-all

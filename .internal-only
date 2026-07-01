@@ -1,0 +1,51 @@
+# Internal-Only Files Reference
+# =============================
+# This file lists paths that should NOT be copied to the customer-facing project.
+# When syncing to the customer project ("CollabAi Framework"), exclude these files/folders.
+
+# Development AI Instructions
+CLAUDE.MD
+
+# Product Planning & Roadmap (SJ Innovation internal)
+docs/backlog/
+
+# Historical Development Notes (session summaries, implementation plans)
+docs/archive/
+
+# Additional internal-only paths
+docs/development/
+docs/AI_AGENTS_GAP_ANALYSIS_AND_IMPLEMENTATION_PLAN.md
+
+# Original SJ Innovation Framework Specifications
+docs/original/
+
+# Environment file with actual API keys (use .env.example instead)
+.env
+
+# This reference file itself
+.internal-only
+
+# ===========================================
+# INTERNAL-ONLY MODULES
+# ===========================================
+
+# Feedback Module (internal only - not for customer release)
+src/pages/Feedback.tsx
+src/pages/admin/FeedbackManagement.tsx
+supabase/functions/send-feedback-notification/
+
+# ===========================================
+# ROUTES TO REMOVE IN CUSTOMER PROJECT
+# ===========================================
+# In App.tsx:
+# - /feedback route
+# - /admin/feedback route
+
+# ===========================================
+# SIDEBAR ENTRIES TO REMOVE
+# ===========================================
+# In src/components/layout/AppSidebar.tsx:
+# - "Feedback" item from sidebarItems array
+
+# In src/components/layout/AdminSidebar.tsx:
+# - "CONTENT & FEEDBACK" group from sidebarGroups array

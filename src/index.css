@@ -1,0 +1,482 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * AI-Forward Design System
+ * Palette: Electric Blue, Cyan, Clean White, Deep Navy
+ * Style: Bold, modern, agentic with AI status indicators
+ * All colors in HSL format
+ */
+
+@layer base {
+  :root {
+    /* Core palette - Light mode with bold AI-forward colors */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    /* Cards - Pure white with crisp edges */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Popovers */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Primary - Electric Blue (bold, AI-forward) */
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Light cool gray */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Muted - Soft blue-gray */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* Accent - Cyan glow */
+    --accent: 187 100% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders - Crisp but subtle */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 199 89% 48%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar - Clean with blue tint */
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 199 89% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 199 89% 48%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 199 89% 48%;
+
+    /* AI-specific tokens */
+    --ai-glow: 199 89% 48%;
+    --ai-pulse: 187 100% 42%;
+    --ai-gradient-start: 199 89% 48%;
+    --ai-gradient-end: 187 100% 42%;
+
+    /* Status colors */
+    --success: 158 64% 52%;
+    --success-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 0%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 187 100% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 199 89% 48%;
+
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 199 89% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 199 89% 55%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 199 89% 55%;
+
+    --ai-glow: 199 89% 55%;
+    --ai-pulse: 187 100% 50%;
+    --ai-gradient-start: 199 89% 55%;
+    --ai-gradient-end: 187 100% 50%;
+
+    --success: 158 64% 52%;
+    --success-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 0%;
+    --info: 199 89% 55%;
+    --info-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Premium focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* AI Glow Effects */
+  .ai-glow {
+    box-shadow: 
+      0 0 20px hsl(var(--ai-glow) / 0.3),
+      0 0 40px hsl(var(--ai-glow) / 0.2),
+      0 0 60px hsl(var(--ai-glow) / 0.1);
+  }
+
+  .ai-glow-sm {
+    box-shadow: 
+      0 0 10px hsl(var(--ai-glow) / 0.25),
+      0 0 20px hsl(var(--ai-glow) / 0.15);
+  }
+
+  .ai-border-glow {
+    box-shadow: 
+      0 0 0 1px hsl(var(--ai-glow) / 0.5),
+      0 0 15px hsl(var(--ai-glow) / 0.3);
+  }
+
+  /* AI Pulse Animation */
+  .ai-pulse {
+    animation: ai-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes ai-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 0 10px hsl(var(--ai-pulse) / 0.4),
+        0 0 20px hsl(var(--ai-pulse) / 0.2);
+    }
+    50% {
+      box-shadow: 
+        0 0 20px hsl(var(--ai-pulse) / 0.6),
+        0 0 40px hsl(var(--ai-pulse) / 0.3);
+    }
+  }
+
+  /* AI Gradient Background */
+  .ai-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+  }
+
+  .ai-gradient-text {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* AI Orb indicator */
+  .ai-orb {
+    @apply relative;
+  }
+
+  .ai-orb::before {
+    content: "";
+    @apply absolute inset-0 rounded-full;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+    animation: ai-orb-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes ai-orb-pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  /* AI Status Dot */
+  .ai-status-dot {
+    @apply relative h-2 w-2 rounded-full;
+    background: hsl(var(--ai-pulse));
+    animation: ai-dot-pulse 2s ease-in-out infinite;
+  }
+
+  .ai-status-dot::after {
+    content: "";
+    @apply absolute inset-0 rounded-full;
+    background: hsl(var(--ai-pulse));
+    animation: ai-dot-ring 2s ease-in-out infinite;
+  }
+
+  @keyframes ai-dot-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  @keyframes ai-dot-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  /* Bold shadow utilities */
+  .shadow-soft {
+    box-shadow: 
+      0 1px 3px 0 hsl(222 47% 11% / 0.04),
+      0 4px 6px -1px hsl(222 47% 11% / 0.06);
+  }
+
+  .shadow-elevated {
+    box-shadow: 
+      0 4px 6px -1px hsl(222 47% 11% / 0.05),
+      0 10px 15px -3px hsl(222 47% 11% / 0.08),
+      0 20px 25px -5px hsl(222 47% 11% / 0.06);
+  }
+
+  .shadow-premium {
+    box-shadow: 
+      0 0 0 1px hsl(var(--border)),
+      0 4px 6px -1px hsl(222 47% 11% / 0.05),
+      0 10px 15px -3px hsl(222 47% 11% / 0.08);
+  }
+
+  .shadow-ai {
+    box-shadow: 
+      0 4px 6px -1px hsl(var(--ai-glow) / 0.1),
+      0 10px 15px -3px hsl(var(--ai-glow) / 0.15),
+      0 0 0 1px hsl(var(--ai-glow) / 0.1);
+  }
+
+  /* Premium transitions */
+  .transition-premium {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-premium;
+  }
+
+  .card-hover:hover {
+    @apply shadow-elevated;
+    transform: translateY(-2px);
+  }
+
+  /* AI Card - cards with AI indicator */
+  .ai-card {
+    @apply relative overflow-hidden rounded-xl border bg-card;
+  }
+
+  .ai-card::before {
+    content: "";
+    @apply absolute top-0 left-0 h-1 w-full;
+    background: linear-gradient(
+      90deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+  }
+
+  .ai-card:hover {
+    @apply shadow-ai;
+  }
+
+  /* Stat card styling */
+  .stat-card {
+    @apply relative overflow-hidden rounded-xl border bg-card p-6;
+  }
+
+  .stat-card::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent;
+  }
+
+  /* Bold button states */
+  .btn-primary-bold {
+    @apply relative overflow-hidden transition-premium;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+  }
+
+  .btn-primary-bold:hover {
+    @apply shadow-ai;
+    transform: translateY(-1px);
+  }
+
+  /* Input refinements */
+  .input-premium {
+    @apply transition-premium;
+  }
+
+  .input-premium:focus {
+    @apply border-primary shadow-ai;
+  }
+
+  /* Table row hover */
+  .table-row-hover {
+    @apply transition-colors;
+  }
+
+  .table-row-hover:hover {
+    @apply bg-muted/50;
+  }
+
+  /* Navigation active indicator */
+  .nav-active {
+    @apply relative;
+  }
+
+  .nav-active::before {
+    content: "";
+    @apply absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full;
+    background: linear-gradient(
+      180deg,
+      hsl(var(--ai-gradient-start)) 0%,
+      hsl(var(--ai-gradient-end)) 100%
+    );
+  }
+
+  /* Bold badge */
+  .badge-ai {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ai-gradient-start) / 0.1) 0%,
+      hsl(var(--ai-gradient-end) / 0.1) 100%
+    );
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.2);
+  }
+}
+
+@layer utilities {
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Subtle gradient backgrounds */
+  .bg-gradient-subtle {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--muted)) 100%
+    );
+  }
+
+  /* AI mesh gradient background */
+  .bg-ai-mesh {
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--ai-glow) / 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 50%, hsl(var(--ai-pulse) / 0.1), transparent),
+      radial-gradient(ellipse 60% 40% at 0% 80%, hsl(var(--ai-glow) / 0.08), transparent);
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md;
+  }
+
+  /* Spacing utilities for consistent layouts */
+  .section-spacing {
+    @apply py-12 md:py-20;
+  }
+
+  .page-padding {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+
+  /* Grid pattern for backgrounds */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Modern overlay scrollbar - hidden until scroll/hover */
+  .scrollbar-modern {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 150ms ease;
+  }
+
+  .scrollbar-modern:hover,
+  .scrollbar-modern:active,
+  .scrollbar-modern:focus-within {
+    scrollbar-color: hsl(var(--sidebar-foreground) / 0.18) transparent;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-thumb {
+    background: hsl(var(--sidebar-foreground) / 0.18);
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 150ms ease, background-color 150ms ease;
+  }
+
+  .scrollbar-modern::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--sidebar-foreground) / 0.35);
+  }
+
+  .scrollbar-modern:hover::-webkit-scrollbar-thumb,
+  .scrollbar-modern:active::-webkit-scrollbar-thumb,
+  .scrollbar-modern:focus-within::-webkit-scrollbar-thumb {
+    opacity: 1;
+  }
+}

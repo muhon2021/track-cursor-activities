@@ -1,0 +1,606 @@
+project_id = "tjkqvbxtziheggurtvcz"
+
+
+# Admin functions - require authentication
+[functions.check-environment]
+verify_jwt = false
+
+[functions.seed-template-data]
+verify_jwt = true
+
+[functions.seed-test-accounts]
+verify_jwt = false
+
+[functions.validate-api-key]
+verify_jwt = false
+
+[functions.sync-ai-models]
+verify_jwt = false
+
+[functions.sync-zoom-files]
+verify_jwt = false
+
+# API endpoints - require authentication
+[functions.api-v1-clients]
+verify_jwt = true
+
+[functions.api-v1-meetings]
+verify_jwt = true
+
+# OAuth functions - require authentication
+[functions.oauth-exchange-token]
+verify_jwt = true
+
+[functions.oauth-refresh-token]
+verify_jwt = true
+
+[functions.generate-business-doc]
+verify_jwt = false
+
+# Zoom meeting creation - disable JWT for ES256 compatibility
+[functions.create-zoom-meeting]
+verify_jwt = false
+
+# Background/service functions - disable JWT (use service role internally)
+[functions.unified-knowledge-search]
+verify_jwt = false
+
+[functions.semantic-search]
+verify_jwt = false
+
+[functions.ai-chat-assistant]
+verify_jwt = false
+
+[functions.auto-embed-knowledge-entry]
+verify_jwt = false
+
+[functions.auto-embed-knowledge-files]
+verify_jwt = false
+
+[functions.auto-embed-meetings]
+verify_jwt = false
+
+[functions.generate-embeddings]
+verify_jwt = false
+
+[functions.generate-meeting-summary]
+verify_jwt = false
+
+[functions.categorize-meeting]
+verify_jwt = false
+
+[functions.send-notification]
+verify_jwt = false
+
+[functions.eos-notification-dispatcher]
+verify_jwt = false
+
+[functions.notification-router]
+verify_jwt = false
+
+[functions.notification-digest]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.sendgrid-validate]
+verify_jwt = false
+
+[functions.send-feedback-notification]
+verify_jwt = false
+
+[functions.audit-log-writer]
+verify_jwt = false
+
+[functions.run-ai-agent]
+verify_jwt = false
+
+[functions.generate-email-draft]
+verify_jwt = false
+
+[functions.generate-sow]
+verify_jwt = false
+
+[functions.accountability-overlap-analyzer]
+verify_jwt = false
+
+[functions.accountability-chart-reminder]
+verify_jwt = false
+
+[functions.accountability-manager-nudge]
+verify_jwt = false
+
+[functions.accountability-revisit-reminder]
+verify_jwt = false
+
+[functions.process-hr-request]
+verify_jwt = false
+
+[functions.user-knowledge-process]
+verify_jwt = false
+
+[functions.sync-google-meet]
+verify_jwt = false
+
+[functions.google-drive-sync]
+verify_jwt = false
+
+[functions.google-drive-upload]
+verify_jwt = false
+
+[functions.user-knowledge-drive-sync]
+verify_jwt = false
+
+[functions.user-knowledge-upload]
+verify_jwt = false
+
+[functions.zoom-transcript-processing]
+verify_jwt = false
+
+# User OAuth functions - authentication validated in-code for ES256 compatibility
+[functions.user-oauth-connect]
+verify_jwt = false
+
+[functions.user-oauth-callback]
+verify_jwt = false
+
+[functions.user-oauth-refresh]
+verify_jwt = false
+
+[functions.user-oauth-disconnect]
+verify_jwt = false
+
+[functions.outlook-send-test-email]
+verify_jwt = false
+
+# Admin: user memory stats (auth + admin check in-code)
+[functions.user-memory-stats]
+verify_jwt = false
+
+# User Drive functions - authentication validated in-code for ES256 compatibility
+[functions.user-drive-list]
+verify_jwt = false
+
+[functions.user-drive-download]
+verify_jwt = false
+
+# SSO and webhook functions
+[functions.validate-sso-domain]
+verify_jwt = false
+
+[functions.webhook-handler]
+verify_jwt = false
+
+# Azure AD authentication functions
+[functions.azure-auth-login]
+verify_jwt = false
+
+[functions.azure-auth-logout]
+verify_jwt = false
+
+# Microsoft Graph subscription management - requires authentication
+[functions.microsoft-graph-subscribe]
+verify_jwt = false
+
+# MCP server verification - background function
+[functions.verify-mcp-server]
+verify_jwt = false
+
+[functions.control-tower-mcp]
+verify_jwt = false
+
+# Admin management - requires manual authentication validation
+[functions.promote-to-admin]
+verify_jwt = false
+
+# Productivity (Path B) - requires authentication
+[functions.team-productivity-metrics]
+verify_jwt = true
+
+[functions.team-productivity-list]
+verify_jwt = true
+
+# Auto-added functions - run scripts/sync-config-functions.sh to sync
+[functions.agent-chat-stream]
+verify_jwt = false
+
+[functions.agent-conversation-chat]
+verify_jwt = false
+
+[functions.ai-chat]
+verify_jwt = false
+
+[functions.api-v1-documents]
+verify_jwt = false
+
+[functions.api-v1-tasks]
+verify_jwt = false
+
+[functions.client-dashboard-api]
+verify_jwt = false
+
+[functions.client-documents]
+verify_jwt = false
+
+[functions.create-client-access]
+verify_jwt = false
+
+[functions.eos-triage-assistant]
+verify_jwt = false
+
+[functions.execute-mcp-tool]
+verify_jwt = false
+
+[functions.extract-agent-memories]
+verify_jwt = false
+
+[functions.extract-meeting-issues]
+verify_jwt = false
+
+[functions.extract-meeting-tasks]
+verify_jwt = false
+
+[functions.gemini-rag-query]
+verify_jwt = false
+
+[functions.knowledge-base]
+verify_jwt = false
+
+[functions.integration-settings]
+verify_jwt = true
+
+[functions.integration-config]
+verify_jwt = true
+
+[functions.log-activity]
+verify_jwt = false
+
+[functions.oauth-authorize]
+verify_jwt = false
+
+[functions.oauth-revoke-token]
+verify_jwt = false
+
+[functions.oauth-token]
+verify_jwt = false
+
+[functions.oauth-userinfo]
+verify_jwt = false
+
+[functions.promote-first-admin]
+verify_jwt = false
+
+[functions.quarterly-digest]
+verify_jwt = false
+
+[functions.run-seed]
+verify_jwt = false
+
+[functions.suggest-okrs]
+verify_jwt = false
+
+[functions.analyze-okr-progress]
+verify_jwt = false
+
+[functions.okr-update-reminder]
+verify_jwt = false
+
+
+[functions.sync-projects-activecollab]
+verify_jwt = false
+
+[functions.activecollab-issue-token]
+verify_jwt = false
+
+[functions.sync-projects-jira]
+verify_jwt = false
+
+[functions.sync-tasks-jira]
+verify_jwt = false
+
+[functions.jira-attachment-proxy]
+verify_jwt = true
+
+[functions.sync-clickup]
+verify_jwt = false
+
+[functions.sync-workamajig]
+verify_jwt = false
+
+[functions.sync-float-schedule]
+verify_jwt = false
+
+[functions.sync-confluence-knowledge]
+verify_jwt = false
+
+[functions.sync-sharepoint-knowledge]
+verify_jwt = false
+
+# Fellow.ai proxy (JWT validated in-function; loads org integration via service role)
+[functions.fellow-api]
+verify_jwt = false
+
+[functions.user-integration-clear-data]
+verify_jwt = false
+
+[functions.clickup-oauth-exchange]
+verify_jwt = false
+
+
+[functions.deal-coach]
+verify_jwt = false
+# Meeting module V2 - management functions
+[functions.create-meeting-review-tasks]
+verify_jwt = false
+
+[functions.generate-recurring-meetings]
+verify_jwt = false
+
+[functions.send-meeting-notification]
+verify_jwt = false
+
+# Meeting module V2 - transcript processing
+[functions.generate-meeting-summary-v2]
+verify_jwt = false
+
+[functions.compile-meeting-summary]
+verify_jwt = false
+
+[functions.parse-meeting-action-items]
+verify_jwt = false
+
+# Meeting module V2 - intelligence
+[functions.discover-meeting-relationships]
+verify_jwt = false
+
+[functions.ai-match-meeting-client]
+verify_jwt = false
+
+[functions.smart-categorize-meetings]
+verify_jwt = false
+
+[functions.classify-zoom-meetings]
+verify_jwt = false
+
+# Meeting module V2 - analysis
+[functions.meeting-efficiency-analyzer]
+verify_jwt = false
+
+[functions.meeting-issue-reporter]
+verify_jwt = false
+
+[functions.meeting-summary-and-extract]
+verify_jwt = false
+
+[functions.match-meeting-to-project]
+verify_jwt = false
+
+[functions.apply-meeting-rules]
+verify_jwt = false
+
+# Meeting module V2 - sync
+[functions.sync-meeting-participants]
+verify_jwt = false
+
+[functions.zoom-cron-sync]
+verify_jwt = false
+
+[functions.check-zoom-sync-health]
+verify_jwt = false
+
+[functions.sync-action-item-to-ac]
+verify_jwt = false
+
+[functions.sync-workboard-action-items]
+verify_jwt = false
+
+# Meeting module V2 - automation
+[functions.process-pending-meetings]
+verify_jwt = false
+
+[functions.send-meeting-efficiency-report]
+verify_jwt = false
+
+[functions.api-v1-zoom-files]
+verify_jwt = false
+
+[functions.manage-zoom-account]
+verify_jwt = false
+
+[functions.get-meeting-participants]
+verify_jwt = false
+
+# Meeting Intelligence MVP - Sprint 9.1-9.2
+[functions.fetch-zoom-transcript]
+verify_jwt = false
+
+[functions.extract-meeting-action-items]
+verify_jwt = false
+
+# Previously missing entries — fixes 401 errors in production
+[functions.api-auth]
+verify_jwt = false
+
+[functions.auto-update-follow-up-statuses]
+verify_jwt = false
+
+[functions.consolidate-agent-memories]
+verify_jwt = false
+
+[functions.email-tracking]
+verify_jwt = false
+
+[functions.embedding-retention-cleanup]
+verify_jwt = false
+
+[functions.enforce-guardrails]
+verify_jwt = false
+
+[functions.generate-conversation-opener]
+verify_jwt = false
+
+[functions.lead-followup-research]
+verify_jwt = false
+
+[functions.orchestrate-agent-team]
+verify_jwt = false
+
+[functions.process-embedding-queue]
+verify_jwt = false
+
+[functions.process-scheduled-emails]
+verify_jwt = false
+
+[functions.request-approval]
+verify_jwt = false
+
+[functions.respond-to-approval]
+verify_jwt = false
+
+[functions.retrieve-agent-memories]
+verify_jwt = false
+
+[functions.send-email-with-tracking]
+verify_jwt = false
+
+[functions.validate-guardrails]
+verify_jwt = false
+
+[functions.clickup-api-proxy]
+verify_jwt = false
+
+[functions.openai-embeddings-proxy]
+verify_jwt = false
+
+# Zoho CRM (JWT validated in-function)
+[functions.zoho-crm-sync]
+verify_jwt = false
+
+[functions.zoho-deal-attachments-sync]
+verify_jwt = false
+
+[functions.zoho-deal-engagements-sync]
+verify_jwt = false
+
+[functions.zoho-deal-events-sync]
+verify_jwt = false
+
+[functions.zoho-deal-contact-enrichment-sync]
+verify_jwt = false
+
+[functions.zoho-deal-account-enrichment-sync]
+verify_jwt = false
+
+# RAG Enhancement
+[functions.kb-chunk-preview]
+verify_jwt = false
+
+[functions.kb-rag-playground]
+verify_jwt = false
+
+[functions.kb-bulk-reembed]
+verify_jwt = false
+
+[functions.kb-sync-action]
+verify_jwt = false
+
+[functions.admin-memory-actions]
+verify_jwt = false
+
+# Document parsing pipeline
+[functions.kb-document-parser]
+verify_jwt = false
+
+[functions.kb-reprocess]
+verify_jwt = false
+
+[functions.kb-sync-slack]
+verify_jwt = false
+
+[functions.accept-user-invite]
+verify_jwt = false
+
+[functions.validate-user-invite]
+verify_jwt = false
+
+[functions.send-user-invite]
+verify_jwt = false
+
+[functions.rbac-manage]
+verify_jwt = false
+
+[functions.validate-email]
+verify_jwt = false
+
+[functions.validate-password]
+verify_jwt = false
+
+[functions.change-password]
+verify_jwt = false
+
+[functions.password-expiry-cron]
+verify_jwt = false
+
+[functions.verify-audit-chain]
+verify_jwt = false
+
+[functions.unlock-account]
+verify_jwt = false
+
+[functions.security-analytics]
+verify_jwt = false
+
+[functions.mfa-policy]
+verify_jwt = false
+
+[functions.mfa-enrollment]
+verify_jwt = false
+
+[functions.signup-domain-whitelist]
+verify_jwt = false
+
+[functions.manage-user-status]
+verify_jwt = false
+
+[functions.update-clickup-task]
+verify_jwt = false
+
+[functions.automation-manage]
+verify_jwt = false
+
+[functions.automation-trigger-evaluator]
+verify_jwt = false
+
+[functions.automation-executor]
+verify_jwt = false
+
+[functions.automation-scheduler]
+verify_jwt = false
+
+[functions.automation-webhook-receiver]
+verify_jwt = false
+
+[functions.graphify-query]
+verify_jwt = false
+
+[functions.graphify-backfill]
+verify_jwt = false
+
+[functions.graphify-sync-relationships]
+verify_jwt = false
+
+[functions.graphify-extract-entities]
+verify_jwt = false
+
+[functions.graphify-analytics]
+verify_jwt = false
+
+[functions.graphify-coverage]
+verify_jwt = false
+
+[functions.storage-settings]
+verify_jwt = false
+
+[functions.knowledge-file-storage]
+verify_jwt = false

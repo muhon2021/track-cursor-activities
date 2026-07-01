@@ -1,0 +1,1 @@
+ALTER TABLE public.sendgrid_config ADD COLUMN IF NOT EXISTS api_key TEXT;

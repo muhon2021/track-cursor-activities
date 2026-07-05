@@ -13,18 +13,22 @@ CREATE TABLE public.ai_agent_categories (
 
 ALTER TABLE public.ai_agent_categories ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can read categories" ON public.ai_agent_categories;
 CREATE POLICY "Authenticated users can read categories"
   ON public.ai_agent_categories FOR SELECT
   USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can insert categories" ON public.ai_agent_categories;
 CREATE POLICY "Authenticated users can insert categories"
   ON public.ai_agent_categories FOR INSERT
   WITH CHECK (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can update categories" ON public.ai_agent_categories;
 CREATE POLICY "Authenticated users can update categories"
   ON public.ai_agent_categories FOR UPDATE
   USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can delete categories" ON public.ai_agent_categories;
 CREATE POLICY "Authenticated users can delete categories"
   ON public.ai_agent_categories FOR DELETE
   USING (auth.role() = 'authenticated');

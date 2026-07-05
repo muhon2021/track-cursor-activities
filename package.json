@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "migrations:run": "bash scripts/run-migrations.sh",
+    "migrate:remote": "node scripts/apply-remote-migrations.mjs",
     "migrations:repair": "bash scripts/repair-migration-history.sh",
     "migrations:mark-applied": "bash scripts/mark-migrations-applied.sh",
     "migrations:hook": "bash scripts/setup-migration-hook.sh",

@@ -52,7 +52,7 @@ export function CsaAuditReportView({ report, audit }: CsaAuditReportViewProps) {
               {audit.header.display_name} · {periodLabel}
             </p>
             <p className="text-sm text-muted-foreground">
-              {audit.header.total_messages} prompts · {audit.header.total_sessions} sessions
+              {audit.header.total_messages} prompts · {audit.header.total_sessions} agents
             </p>
             {(() => {
               const note = formatGenerationMetaNote(generationMeta);
@@ -169,7 +169,7 @@ export function CsaAuditReportView({ report, audit }: CsaAuditReportViewProps) {
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-base">{area.name}</CardTitle>
-                  <Badge variant="secondary">{area.sessions} sessions</Badge>
+                  <Badge variant="secondary">{area.sessions} agents</Badge>
                 </div>
               </CardHeader>
               <CardContent>

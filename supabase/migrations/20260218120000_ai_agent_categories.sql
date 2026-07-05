@@ -14,6 +14,7 @@ CREATE INDEX idx_ai_agent_categories_is_active ON public.ai_agent_categories(is_
 
 ALTER TABLE public.ai_agent_categories ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage ai_agent_categories" ON public.ai_agent_categories;
 CREATE POLICY "Admins can manage ai_agent_categories"
   ON public.ai_agent_categories FOR ALL
   TO authenticated

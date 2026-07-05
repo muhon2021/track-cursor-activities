@@ -5,8 +5,7 @@
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.47.10";
 import {
   chatCompletion,
-  getModel,
-  getModelByModelId,
+  getChatModelWithAvailableKey,
   type ChatMessage,
 } from "./ai-provider-routing.ts";
 
@@ -112,7 +111,13 @@ export interface CsaGenerationMeta {
   analysisNote: string;
 }
 
-const CSA_MODEL_PREFERENCES = ["gpt-4o", "gpt-4o-mini"];
+const CSA_MODEL_PREFERENCES = [
+  "gpt-4o",
+  "gpt-4o-mini",
+  "gemini-2.5-flash",
+  "gemini-2.0-flash",
+  "gemini-2.5-pro",
+];
 
 const NARRATIVE_JSON_SCHEMA = `{
   "at_a_glance": { "working": string[], "hindering": string[], "quick_wins": string[], "ambitious": string[] },
@@ -476,11 +481,7 @@ export function validateCsaAuditAiPartial(
 }
 
 async function resolveCsaChatModel(supabase: SupabaseClient) {
-  for (const modelId of CSA_MODEL_PREFERENCES) {
-    const model = await getModelByModelId(supabase, modelId);
-    if (model) return model;
-  }
-  return getModel(supabase, undefined, "chat");
+  return getChatModelWithAvailableKey(supabase, CSA_MODEL_PREFERENCES);
 }
 
 async function callAuditAi(

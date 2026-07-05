@@ -41,18 +41,22 @@ CREATE INDEX idx_agent_messages_conversation ON public.agent_messages(conversati
 -- RLS for agent_conversations
 ALTER TABLE public.agent_conversations ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can view own conversations"
   ON public.agent_conversations FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can insert own conversations"
   ON public.agent_conversations FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can update own conversations"
   ON public.agent_conversations FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can delete own conversations"
   ON public.agent_conversations FOR DELETE
   USING (auth.uid() = user_id);
@@ -60,6 +64,7 @@ CREATE POLICY "Users can delete own conversations"
 -- RLS for agent_messages (scoped through conversation ownership)
 ALTER TABLE public.agent_messages ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can view messages in own conversations"
   ON public.agent_messages FOR SELECT
   USING (EXISTS (
@@ -67,6 +72,7 @@ CREATE POLICY "Users can view messages in own conversations"
     WHERE c.id = conversation_id AND c.user_id = auth.uid()
   ));
 
+DROP POLICY IF EXISTS "Users can insert messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can insert messages in own conversations"
   ON public.agent_messages FOR INSERT
   WITH CHECK (EXISTS (
@@ -74,6 +80,7 @@ CREATE POLICY "Users can insert messages in own conversations"
     WHERE c.id = conversation_id AND c.user_id = auth.uid()
   ));
 
+DROP POLICY IF EXISTS "Users can delete messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can delete messages in own conversations"
   ON public.agent_messages FOR DELETE
   USING (EXISTS (

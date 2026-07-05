@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePermissions } from "@/hooks/usePermissions";
+import { isHackathonMode } from "@/lib/hackathon";
 import { Loader2 } from "lucide-react";
 import { PermissionDenied } from "@/components/auth/PermissionDenied";
 import { toast } from "sonner";
 
 export function AdminRoute() {
+  const hackathon = isHackathonMode();
   const { user, profile, loading, profileLoading } = useAuth();
   const {
     hasPermission,
@@ -14,6 +16,20 @@ export function AdminRoute() {
     isLoading: permissionsLoading,
     isSuccess: permissionsLoaded,
   } = usePermissions();
+
+  if (hackathon) {
+    if (loading) {
+      return (
+        <div className="flex h-screen items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      );
+    }
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
+    return <Outlet />;
+  }
 
   if (
     loading ||

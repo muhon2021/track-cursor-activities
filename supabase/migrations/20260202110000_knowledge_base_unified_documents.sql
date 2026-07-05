@@ -37,6 +37,7 @@ CREATE INDEX IF NOT EXISTS idx_unified_documents_created ON public.unified_docum
 ALTER TABLE public.unified_documents ENABLE ROW LEVEL SECURITY;
 
 -- Users see org-wide docs (common, project, client, deal) or their own (user)
+DROP POLICY IF EXISTS "Users can view unified_documents" ON public.unified_documents;
 CREATE POLICY "Users can view unified_documents"
   ON public.unified_documents FOR SELECT TO authenticated
   USING (
@@ -45,19 +46,23 @@ CREATE POLICY "Users can view unified_documents"
     OR public.has_role(auth.uid(), 'admin')
   );
 
+DROP POLICY IF EXISTS "Users can insert own user docs" ON public.unified_documents;
 CREATE POLICY "Users can insert own user docs"
   ON public.unified_documents FOR INSERT TO authenticated
   WITH CHECK (owner_type = 'user' AND owner_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users can update own user docs" ON public.unified_documents;
 CREATE POLICY "Users can update own user docs"
   ON public.unified_documents FOR UPDATE TO authenticated
   USING (owner_type = 'user' AND owner_id = auth.uid())
   WITH CHECK (owner_type = 'user' AND owner_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users can delete own user docs" ON public.unified_documents;
 CREATE POLICY "Users can delete own user docs"
   ON public.unified_documents FOR DELETE TO authenticated
   USING (owner_type = 'user' AND owner_id = auth.uid());
 
+DROP POLICY IF EXISTS "Admins can manage all unified_documents" ON public.unified_documents;
 CREATE POLICY "Admins can manage all unified_documents"
   ON public.unified_documents FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -134,8 +139,10 @@ CREATE INDEX IF NOT EXISTS idx_processing_queue_history_started ON public.proces
 
 ALTER TABLE public.processing_queue_history ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated can view processing_queue_history" ON public.processing_queue_history;
 CREATE POLICY "Authenticated can view processing_queue_history"
   ON public.processing_queue_history FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Admins can manage processing_queue_history" ON public.processing_queue_history;
 CREATE POLICY "Admins can manage processing_queue_history"
   ON public.processing_queue_history FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -160,8 +167,10 @@ CREATE INDEX IF NOT EXISTS idx_gemini_corpora_active ON public.gemini_corpora(is
 
 ALTER TABLE public.gemini_corpora ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated can view gemini_corpora" ON public.gemini_corpora;
 CREATE POLICY "Authenticated can view gemini_corpora"
   ON public.gemini_corpora FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Admins can manage gemini_corpora" ON public.gemini_corpora;
 CREATE POLICY "Admins can manage gemini_corpora"
   ON public.gemini_corpora FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -190,8 +199,10 @@ CREATE INDEX IF NOT EXISTS idx_gemini_sync_logs_started ON public.gemini_sync_lo
 
 ALTER TABLE public.gemini_sync_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated can view gemini_sync_logs" ON public.gemini_sync_logs;
 CREATE POLICY "Authenticated can view gemini_sync_logs"
   ON public.gemini_sync_logs FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Admins can manage gemini_sync_logs" ON public.gemini_sync_logs;
 CREATE POLICY "Admins can manage gemini_sync_logs"
   ON public.gemini_sync_logs FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -217,12 +228,15 @@ CREATE INDEX IF NOT EXISTS idx_gemini_query_logs_created ON public.gemini_query_
 
 ALTER TABLE public.gemini_query_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own gemini_query_logs" ON public.gemini_query_logs;
 CREATE POLICY "Users can view own gemini_query_logs"
   ON public.gemini_query_logs FOR SELECT TO authenticated
   USING (user_id = auth.uid());
+DROP POLICY IF EXISTS "Users can insert own gemini_query_logs" ON public.gemini_query_logs;
 CREATE POLICY "Users can insert own gemini_query_logs"
   ON public.gemini_query_logs FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());
+DROP POLICY IF EXISTS "Admins can view all gemini_query_logs" ON public.gemini_query_logs;
 CREATE POLICY "Admins can view all gemini_query_logs"
   ON public.gemini_query_logs FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));

@@ -7,7 +7,7 @@ export const CSA_SUMMARY_STATS: {
   getValue: (stats: CsaAuditReport["stats_row"]) => string | number;
 }[] = [
   { label: "Prompts", getValue: (s) => s.total_messages },
-  { label: "Sessions", getValue: (s) => s.total_sessions },
+  { label: "Agents", getValue: (s) => s.total_sessions },
   { label: "Days active", getValue: (s) => s.days_active },
   { label: "Avg prompts/day", getValue: (s) => s.avg_messages_per_day },
 ];
@@ -41,7 +41,10 @@ export function formatGenerationMetaNote(meta: CsaGenerationMeta | undefined): s
   }
   if (meta.source === "heuristic") {
     const note = meta.analysisNote ? ` (${meta.analysisNote})` : "";
-    return `Template-based summary — AI generation unavailable${note}. Check OpenAI credentials in AI config and regenerate.`;
+    const hint = meta.analysisNote?.includes("401") || meta.analysisNote?.includes("invalid authentication")
+      ? " Your API key may be invalid — use a Google AI Studio key (AIza…) or a valid OpenAI key."
+      : "";
+    return `Template-based summary — AI generation unavailable${note}.${hint} Set OPENAI_API_KEY or GEMINI_API_KEY in Supabase Edge Function secrets and regenerate.`;
   }
   return null;
 }

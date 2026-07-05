@@ -1,5 +1,5 @@
 -- OAuth States table for CSRF protection during OAuth authorization
-CREATE TABLE public.oauth_states (
+CREATE TABLE IF NOT EXISTS public.oauth_states (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   state TEXT NOT NULL UNIQUE,
   user_id UUID NOT NULL,
@@ -13,24 +13,27 @@ CREATE TABLE public.oauth_states (
 ALTER TABLE public.oauth_states ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for oauth_states
+DROP POLICY IF EXISTS "Users can view their own oauth states" ON public.oauth_states;
 CREATE POLICY "Users can view their own oauth states"
   ON public.oauth_states FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can create their own oauth states" ON public.oauth_states;
 CREATE POLICY "Users can create their own oauth states"
   ON public.oauth_states FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete their own oauth states" ON public.oauth_states;
 CREATE POLICY "Users can delete their own oauth states"
   ON public.oauth_states FOR DELETE
   USING (auth.uid() = user_id);
 
 -- Index for faster state lookups
-CREATE INDEX idx_oauth_states_state ON public.oauth_states(state);
-CREATE INDEX idx_oauth_states_expires_at ON public.oauth_states(expires_at);
+CREATE INDEX IF NOT EXISTS idx_oauth_states_state ON public.oauth_states(state);
+CREATE INDEX IF NOT EXISTS idx_oauth_states_expires_at ON public.oauth_states(expires_at);
 
 -- User OAuth Tokens table for storing user credentials
-CREATE TABLE public.user_oauth_tokens (
+CREATE TABLE IF NOT EXISTS public.user_oauth_tokens (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL,
   provider_slug TEXT NOT NULL,
@@ -58,28 +61,33 @@ CREATE TABLE public.user_oauth_tokens (
 ALTER TABLE public.user_oauth_tokens ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for user_oauth_tokens
+DROP POLICY IF EXISTS "Users can view their own oauth tokens" ON public.user_oauth_tokens;
 CREATE POLICY "Users can view their own oauth tokens"
   ON public.user_oauth_tokens FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can create their own oauth tokens" ON public.user_oauth_tokens;
 CREATE POLICY "Users can create their own oauth tokens"
   ON public.user_oauth_tokens FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update their own oauth tokens" ON public.user_oauth_tokens;
 CREATE POLICY "Users can update their own oauth tokens"
   ON public.user_oauth_tokens FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete their own oauth tokens" ON public.user_oauth_tokens;
 CREATE POLICY "Users can delete their own oauth tokens"
   ON public.user_oauth_tokens FOR DELETE
   USING (auth.uid() = user_id);
 
 -- Indexes for user_oauth_tokens
-CREATE INDEX idx_user_oauth_tokens_user_id ON public.user_oauth_tokens(user_id);
-CREATE INDEX idx_user_oauth_tokens_provider ON public.user_oauth_tokens(provider_slug);
-CREATE INDEX idx_user_oauth_tokens_active ON public.user_oauth_tokens(is_active);
+CREATE INDEX IF NOT EXISTS idx_user_oauth_tokens_user_id ON public.user_oauth_tokens(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_oauth_tokens_provider ON public.user_oauth_tokens(provider_slug);
+CREATE INDEX IF NOT EXISTS idx_user_oauth_tokens_active ON public.user_oauth_tokens(is_active);
 
 -- Trigger for updated_at
+DROP TRIGGER IF EXISTS update_user_oauth_tokens_updated_at ON public.user_oauth_tokens;
 CREATE TRIGGER update_user_oauth_tokens_updated_at
   BEFORE UPDATE ON public.user_oauth_tokens
   FOR EACH ROW

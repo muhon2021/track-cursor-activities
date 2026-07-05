@@ -6,6 +6,7 @@ DROP POLICY IF EXISTS "Users can view their own feedback" ON public.feedback;
 DROP POLICY IF EXISTS "Admins can view all feedback" ON public.feedback;
 
 -- Step 2: Create new unified SELECT policy for all authenticated users
+DROP POLICY IF EXISTS "All authenticated users can view feedback" ON public.feedback;
 CREATE POLICY "All authenticated users can view feedback"
   ON public.feedback FOR SELECT
   TO authenticated

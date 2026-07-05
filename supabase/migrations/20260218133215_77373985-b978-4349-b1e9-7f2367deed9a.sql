@@ -14,19 +14,23 @@ CREATE TABLE public.prompt_templates (
 
 ALTER TABLE public.prompt_templates ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can select prompt templates" ON public.prompt_templates;
 CREATE POLICY "Authenticated users can select prompt templates"
   ON public.prompt_templates FOR SELECT TO authenticated
   USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can insert prompt templates" ON public.prompt_templates;
 CREATE POLICY "Authenticated users can insert prompt templates"
   ON public.prompt_templates FOR INSERT TO authenticated
   WITH CHECK (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can update prompt templates" ON public.prompt_templates;
 CREATE POLICY "Authenticated users can update prompt templates"
   ON public.prompt_templates FOR UPDATE TO authenticated
   USING (auth.role() = 'authenticated')
   WITH CHECK (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Authenticated users can delete prompt templates" ON public.prompt_templates;
 CREATE POLICY "Authenticated users can delete prompt templates"
   ON public.prompt_templates FOR DELETE TO authenticated
   USING (auth.role() = 'authenticated');

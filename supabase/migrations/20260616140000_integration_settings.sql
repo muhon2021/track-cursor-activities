@@ -31,6 +31,7 @@ CREATE TRIGGER set_integration_settings_updated_at
 ALTER TABLE public.integration_settings ENABLE ROW LEVEL SECURITY;
 
 -- Admins and moderators can view preferences
+DROP POLICY IF EXISTS "Admins and moderators can view integration_settings" ON public.integration_settings;
 CREATE POLICY "Admins and moderators can view integration_settings"
   ON public.integration_settings FOR SELECT
   TO authenticated
@@ -40,17 +41,20 @@ CREATE POLICY "Admins and moderators can view integration_settings"
   );
 
 -- Only admins can create or update preferences
+DROP POLICY IF EXISTS "Admins can insert integration_settings" ON public.integration_settings;
 CREATE POLICY "Admins can insert integration_settings"
   ON public.integration_settings FOR INSERT
   TO authenticated
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Admins can update integration_settings" ON public.integration_settings;
 CREATE POLICY "Admins can update integration_settings"
   ON public.integration_settings FOR UPDATE
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Admins can delete integration_settings" ON public.integration_settings;
 CREATE POLICY "Admins can delete integration_settings"
   ON public.integration_settings FOR DELETE
   TO authenticated

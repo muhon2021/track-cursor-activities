@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { logLogin, logLogout } from "@/lib/activity-logger";
 import { recordLoginAttempt } from "@/hooks/useSecurityHardening";
+import { isHackathonMode, hackathonDemoProfile } from "@/lib/hackathon";
 
 interface Profile {
   id: string;
@@ -173,6 +174,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
+      if (isHackathonMode()) {
+        const authUser = (await supabase.auth.getUser()).data.user;
+        const demo = hackathonDemoProfile(userId, authUser?.email ?? undefined);
+        profileUserIdRef.current = userId;
+        setProfile(demo);
+      }
     } finally {
       isFetchingProfileRef.current = false;
       setProfileLoading(false);
@@ -235,14 +242,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Sign in with email/password
   const signIn = async (email: string, password: string) => {
     try {
-      const { data: isLocked, error: lockError } = await supabase.rpc("is_account_locked", {
-        p_email: email,
-      });
+      if (!isHackathonMode()) {
+        const { data: isLocked, error: lockError } = await supabase.rpc("is_account_locked", {
+          p_email: email,
+        });
 
-      if (!lockError && isLocked) {
-        throw {
-          message: "Account is temporarily locked due to too many failed login attempts.",
-        } as AuthError;
+        if (!lockError && isLocked) {
+          throw {
+            message: "Account is temporarily locked due to too many failed login attempts.",
+          } as AuthError;
+        }
       }
 
       const { error } = await supabase.auth.signInWithPassword({
@@ -250,14 +259,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
       if (error) {
-        void recordLoginAttempt(email, false);
+        if (!isHackathonMode()) {
+          void recordLoginAttempt(email, false);
+        }
         throw error;
       }
 
-      void recordLoginAttempt(email, true);
-
-      // Log login activity
-      logLogin("email");
+      if (!isHackathonMode()) {
+        void recordLoginAttempt(email, true);
+        logLogin("email");
+      }
 
       toast({
         title: "Welcome back!",

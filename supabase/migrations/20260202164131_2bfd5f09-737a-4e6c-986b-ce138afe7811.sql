@@ -9,7 +9,8 @@ SELECT
   false,
   'Your Zoom OAuth App Client ID from the Zoom Marketplace',
   1
-FROM integration_providers ip WHERE ip.slug = 'zoom';
+FROM integration_providers ip WHERE ip.slug = 'zoom'
+ON CONFLICT (provider_id, field_key) DO NOTHING;
 
 INSERT INTO integration_fields (provider_id, field_key, label, field_type, is_required, is_sensitive, help_text, display_order)
 SELECT 
@@ -21,7 +22,8 @@ SELECT
   true,
   'Your Zoom OAuth App Client Secret from the Zoom Marketplace',
   2
-FROM integration_providers ip WHERE ip.slug = 'zoom';
+FROM integration_providers ip WHERE ip.slug = 'zoom'
+ON CONFLICT (provider_id, field_key) DO NOTHING;
 
 -- Also update the oauth_config with proper Zoom OAuth settings
 UPDATE integration_providers

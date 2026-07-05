@@ -15,12 +15,14 @@ CREATE INDEX IF NOT EXISTS idx_meeting_external_participants_meeting_id ON meeti
 ALTER TABLE meeting_external_participants ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can view external participants' AND tablename = 'meeting_external_participants') THEN
-    CREATE POLICY "Authenticated users can view external participants" ON meeting_external_participants FOR SELECT TO authenticated USING (true);
+    DROP POLICY IF EXISTS "Authenticated users can view external participants" ON meeting_external_participants;
+CREATE POLICY "Authenticated users can view external participants" ON meeting_external_participants FOR SELECT TO authenticated USING (true);
   END IF;
 END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can manage external participants' AND tablename = 'meeting_external_participants') THEN
-    CREATE POLICY "Authenticated users can manage external participants" ON meeting_external_participants FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "Authenticated users can manage external participants" ON meeting_external_participants;
+CREATE POLICY "Authenticated users can manage external participants" ON meeting_external_participants FOR ALL TO authenticated USING (true) WITH CHECK (true);
   END IF;
 END $$;
 DROP TRIGGER IF EXISTS update_meeting_external_participants_updated_at ON meeting_external_participants;
@@ -48,12 +50,14 @@ CREATE INDEX IF NOT EXISTS idx_meeting_action_items_assignee_id ON meeting_actio
 ALTER TABLE meeting_action_items ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can view action items' AND tablename = 'meeting_action_items') THEN
-    CREATE POLICY "Authenticated users can view action items" ON meeting_action_items FOR SELECT TO authenticated USING (true);
+    DROP POLICY IF EXISTS "Authenticated users can view action items" ON meeting_action_items;
+CREATE POLICY "Authenticated users can view action items" ON meeting_action_items FOR SELECT TO authenticated USING (true);
   END IF;
 END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can manage action items' AND tablename = 'meeting_action_items') THEN
-    CREATE POLICY "Authenticated users can manage action items" ON meeting_action_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "Authenticated users can manage action items" ON meeting_action_items;
+CREATE POLICY "Authenticated users can manage action items" ON meeting_action_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
   END IF;
 END $$;
 DROP TRIGGER IF EXISTS update_meeting_action_items_updated_at ON meeting_action_items;
@@ -78,12 +82,14 @@ CREATE INDEX IF NOT EXISTS idx_meeting_assignment_suggestions_review_status ON m
 ALTER TABLE meeting_assignment_suggestions ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can view assignment suggestions' AND tablename = 'meeting_assignment_suggestions') THEN
-    CREATE POLICY "Authenticated users can view assignment suggestions" ON meeting_assignment_suggestions FOR SELECT TO authenticated USING (true);
+    DROP POLICY IF EXISTS "Authenticated users can view assignment suggestions" ON meeting_assignment_suggestions;
+CREATE POLICY "Authenticated users can view assignment suggestions" ON meeting_assignment_suggestions FOR SELECT TO authenticated USING (true);
   END IF;
 END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can manage assignment suggestions' AND tablename = 'meeting_assignment_suggestions') THEN
-    CREATE POLICY "Authenticated users can manage assignment suggestions" ON meeting_assignment_suggestions FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "Authenticated users can manage assignment suggestions" ON meeting_assignment_suggestions;
+CREATE POLICY "Authenticated users can manage assignment suggestions" ON meeting_assignment_suggestions FOR ALL TO authenticated USING (true) WITH CHECK (true);
   END IF;
 END $$;
 DROP TRIGGER IF EXISTS update_meeting_assignment_suggestions_updated_at ON meeting_assignment_suggestions;
@@ -102,12 +108,14 @@ CREATE INDEX IF NOT EXISTS idx_client_meetings_meeting_id ON client_meetings(mee
 ALTER TABLE client_meetings ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can view client meetings' AND tablename = 'client_meetings') THEN
-    CREATE POLICY "Authenticated users can view client meetings" ON client_meetings FOR SELECT TO authenticated USING (true);
+    DROP POLICY IF EXISTS "Authenticated users can view client meetings" ON client_meetings;
+CREATE POLICY "Authenticated users can view client meetings" ON client_meetings FOR SELECT TO authenticated USING (true);
   END IF;
 END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can manage client meetings' AND tablename = 'client_meetings') THEN
-    CREATE POLICY "Authenticated users can manage client meetings" ON client_meetings FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "Authenticated users can manage client meetings" ON client_meetings;
+CREATE POLICY "Authenticated users can manage client meetings" ON client_meetings FOR ALL TO authenticated USING (true) WITH CHECK (true);
   END IF;
 END $$;
 
@@ -124,12 +132,14 @@ CREATE INDEX IF NOT EXISTS idx_contact_meeting_links_meeting_id ON contact_meeti
 ALTER TABLE contact_meeting_links ENABLE ROW LEVEL SECURITY;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can view contact meeting links' AND tablename = 'contact_meeting_links') THEN
-    CREATE POLICY "Authenticated users can view contact meeting links" ON contact_meeting_links FOR SELECT TO authenticated USING (true);
+    DROP POLICY IF EXISTS "Authenticated users can view contact meeting links" ON contact_meeting_links;
+CREATE POLICY "Authenticated users can view contact meeting links" ON contact_meeting_links FOR SELECT TO authenticated USING (true);
   END IF;
 END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Authenticated users can manage contact meeting links' AND tablename = 'contact_meeting_links') THEN
-    CREATE POLICY "Authenticated users can manage contact meeting links" ON contact_meeting_links FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    DROP POLICY IF EXISTS "Authenticated users can manage contact meeting links" ON contact_meeting_links;
+CREATE POLICY "Authenticated users can manage contact meeting links" ON contact_meeting_links FOR ALL TO authenticated USING (true) WITH CHECK (true);
   END IF;
 END $$;
 

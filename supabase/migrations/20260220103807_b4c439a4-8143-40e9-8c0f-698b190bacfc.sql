@@ -1,3 +1,5 @@
+SET search_path TO public, extensions;
+
 
 -- RPC: vector similarity search with optional context and filters
 CREATE OR REPLACE FUNCTION match_embeddings_admin(
@@ -25,7 +27,7 @@ RETURNS TABLE (
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = public, extensions
 AS $$
 BEGIN
   RETURN QUERY
@@ -102,5 +104,5 @@ COMMENT ON FUNCTION match_embeddings_admin IS 'Admin semantic search with option
 -- Ensure embeddings has index for vector search (may already exist)
 CREATE INDEX IF NOT EXISTS idx_embeddings_vector_cosine
   ON public.embeddings
-  USING ivfflat (embedding vector_cosine_ops)
+  USING ivfflat (embedding extensions.vector_cosine_ops)
   WITH (lists = 100);

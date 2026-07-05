@@ -19,21 +19,25 @@ CREATE TABLE IF NOT EXISTS public.user_microsoft_teams (
 ALTER TABLE public.user_microsoft_teams ENABLE ROW LEVEL SECURITY;
 
 -- Users can only see their own teams
+DROP POLICY IF EXISTS "Users can view own teams" ON public.user_microsoft_teams;
 CREATE POLICY "Users can view own teams" ON public.user_microsoft_teams
   FOR SELECT TO authenticated
   USING (auth.uid() = user_id);
 
 -- Users can insert their own teams
+DROP POLICY IF EXISTS "Users can insert own teams" ON public.user_microsoft_teams;
 CREATE POLICY "Users can insert own teams" ON public.user_microsoft_teams
   FOR INSERT TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
 -- Users can update their own teams
+DROP POLICY IF EXISTS "Users can update own teams" ON public.user_microsoft_teams;
 CREATE POLICY "Users can update own teams" ON public.user_microsoft_teams
   FOR UPDATE TO authenticated
   USING (auth.uid() = user_id);
 
 -- Users can delete their own teams
+DROP POLICY IF EXISTS "Users can delete own teams" ON public.user_microsoft_teams;
 CREATE POLICY "Users can delete own teams" ON public.user_microsoft_teams
   FOR DELETE TO authenticated
   USING (auth.uid() = user_id);

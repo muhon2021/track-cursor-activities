@@ -49,38 +49,45 @@ ALTER TABLE public.ai_models ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ai_usage_logs ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for ai_providers (read by all authenticated, write by admins)
+DROP POLICY IF EXISTS "Authenticated users can view providers" ON public.ai_providers;
 CREATE POLICY "Authenticated users can view providers"
   ON public.ai_providers FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage providers" ON public.ai_providers;
 CREATE POLICY "Admins can manage providers"
   ON public.ai_providers FOR ALL
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));
 
 -- RLS Policies for ai_models (read by all authenticated, write by admins)
+DROP POLICY IF EXISTS "Authenticated users can view models" ON public.ai_models;
 CREATE POLICY "Authenticated users can view models"
   ON public.ai_models FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage models" ON public.ai_models;
 CREATE POLICY "Admins can manage models"
   ON public.ai_models FOR ALL
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));
 
 -- RLS Policies for ai_usage_logs (users see their own, admins see all)
+DROP POLICY IF EXISTS "Users can view their own usage logs" ON public.ai_usage_logs;
 CREATE POLICY "Users can view their own usage logs"
   ON public.ai_usage_logs FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id OR public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Users can insert their own usage logs" ON public.ai_usage_logs;
 CREATE POLICY "Users can insert their own usage logs"
   ON public.ai_usage_logs FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can manage all usage logs" ON public.ai_usage_logs;
 CREATE POLICY "Admins can manage all usage logs"
   ON public.ai_usage_logs FOR ALL
   TO authenticated

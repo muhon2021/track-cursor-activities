@@ -1,0 +1,1 @@
+{"name":"batch_07_20260105_sso_configurations","fileCount":5,"files":["20260103_migrate_existing_integrations.sql","20260105_add_google_login_provider.sql","20260105_add_user_id_to_organization_integrations.sql","20260105_oauth_states.sql","20260105_sso_configurations.sql"]}

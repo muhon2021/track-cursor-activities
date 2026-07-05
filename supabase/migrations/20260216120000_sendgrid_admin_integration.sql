@@ -24,8 +24,10 @@ CREATE TRIGGER set_integrations_updated_at
   EXECUTE FUNCTION public.set_updated_at();
 
 ALTER TABLE integrations ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Authenticated users can view integrations" ON integrations;
 CREATE POLICY "Authenticated users can view integrations"
   ON integrations FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Admins can manage integrations" ON integrations;
 CREATE POLICY "Admins can manage integrations"
   ON integrations FOR ALL TO authenticated
   USING (has_role(auth.uid(), 'admin'::app_role))

@@ -95,17 +95,20 @@ ON CONFLICT (id) DO NOTHING;
 
 ALTER TABLE public.meeting_files ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage all meeting files" ON public.meeting_files;
 CREATE POLICY "Admins can manage all meeting files"
   ON public.meeting_files FOR ALL
   TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Authenticated users can view meeting files" ON public.meeting_files;
 CREATE POLICY "Authenticated users can view meeting files"
   ON public.meeting_files FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Users can manage meeting files for their meetings" ON public.meeting_files;
 CREATE POLICY "Users can manage meeting files for their meetings"
   ON public.meeting_files FOR ALL
   TO authenticated

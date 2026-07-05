@@ -68,14 +68,17 @@ ON CONFLICT (id) DO NOTHING;
 ALTER TABLE meeting_files ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for meeting_files
+DROP POLICY IF EXISTS "Admins can manage all meeting files" ON meeting_files;
 CREATE POLICY "Admins can manage all meeting files"
   ON meeting_files FOR ALL
   USING (has_role(auth.uid(), 'admin'::app_role));
 
+DROP POLICY IF EXISTS "Authenticated users can view meeting files" ON meeting_files;
 CREATE POLICY "Authenticated users can view meeting files"
   ON meeting_files FOR SELECT
   USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can manage meeting files for their meetings" ON meeting_files;
 CREATE POLICY "Users can manage meeting files for their meetings"
   ON meeting_files FOR ALL
   USING (EXISTS (
@@ -85,6 +88,7 @@ CREATE POLICY "Users can manage meeting files for their meetings"
   ));
 
 -- Create trigger for updated_at
+DROP TRIGGER IF EXISTS update_meeting_files_updated_at ON meeting_files;
 CREATE TRIGGER update_meeting_files_updated_at
   BEFORE UPDATE ON meeting_files
   FOR EACH ROW

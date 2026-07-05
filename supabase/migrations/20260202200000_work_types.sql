@@ -16,11 +16,13 @@ CREATE TABLE IF NOT EXISTS work_types (
 
 ALTER TABLE work_types ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can read work types" ON work_types;
 CREATE POLICY "Authenticated users can read work types"
   ON work_types FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admin users can manage work types" ON work_types;
 CREATE POLICY "Admin users can manage work types"
   ON work_types FOR ALL
   TO authenticated

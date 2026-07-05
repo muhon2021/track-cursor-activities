@@ -161,7 +161,9 @@ CREATE INDEX IF NOT EXISTS idx_contact_activities_not_deleted ON contact_activit
 ALTER TABLE contact_activities ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view activities" ON contact_activities;
 DROP POLICY IF EXISTS "Authenticated users can manage activities" ON contact_activities;
+DROP POLICY IF EXISTS "Authenticated users can view activities" ON contact_activities;
 CREATE POLICY "Authenticated users can view activities" ON contact_activities FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage activities" ON contact_activities;
 CREATE POLICY "Authenticated users can manage activities" ON contact_activities FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION update_contact_on_activity()
@@ -199,7 +201,9 @@ CREATE INDEX IF NOT EXISTS idx_contact_ai_summaries_expires_at ON contact_ai_sum
 ALTER TABLE contact_ai_summaries ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view summaries" ON contact_ai_summaries;
 DROP POLICY IF EXISTS "Authenticated users can manage summaries" ON contact_ai_summaries;
+DROP POLICY IF EXISTS "Authenticated users can view summaries" ON contact_ai_summaries;
 CREATE POLICY "Authenticated users can view summaries" ON contact_ai_summaries FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage summaries" ON contact_ai_summaries;
 CREATE POLICY "Authenticated users can manage summaries" ON contact_ai_summaries FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION refresh_contact_ai_summary(p_contact_id UUID)
@@ -243,7 +247,9 @@ CREATE INDEX IF NOT EXISTS idx_email_templates_usage ON contact_email_templates(
 ALTER TABLE contact_email_templates ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view templates" ON contact_email_templates;
 DROP POLICY IF EXISTS "Authenticated users can manage templates" ON contact_email_templates;
+DROP POLICY IF EXISTS "Authenticated users can view templates" ON contact_email_templates;
 CREATE POLICY "Authenticated users can view templates" ON contact_email_templates FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage templates" ON contact_email_templates;
 CREATE POLICY "Authenticated users can manage templates" ON contact_email_templates FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION increment_template_usage(template_id UUID)
@@ -314,7 +320,9 @@ CREATE INDEX IF NOT EXISTS idx_email_logs_provider_message_id ON email_logs(prov
 ALTER TABLE email_logs ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view email logs" ON email_logs;
 DROP POLICY IF EXISTS "Authenticated users can manage email logs" ON email_logs;
+DROP POLICY IF EXISTS "Authenticated users can view email logs" ON email_logs;
 CREATE POLICY "Authenticated users can view email logs" ON email_logs FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage email logs" ON email_logs;
 CREATE POLICY "Authenticated users can manage email logs" ON email_logs FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION update_contact_on_email_sent()
@@ -370,7 +378,9 @@ CREATE INDEX IF NOT EXISTS idx_email_tracking_created_at ON email_tracking_event
 ALTER TABLE email_tracking_events ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view tracking events" ON email_tracking_events;
 DROP POLICY IF EXISTS "Authenticated users can manage tracking events" ON email_tracking_events;
+DROP POLICY IF EXISTS "Authenticated users can view tracking events" ON email_tracking_events;
 CREATE POLICY "Authenticated users can view tracking events" ON email_tracking_events FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage tracking events" ON email_tracking_events;
 CREATE POLICY "Authenticated users can manage tracking events" ON email_tracking_events FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION process_sendgrid_event(
@@ -421,7 +431,9 @@ CREATE INDEX IF NOT EXISTS idx_lead_intent_analysis_intent_status ON lead_intent
 ALTER TABLE lead_intent_analysis ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view intent analysis" ON lead_intent_analysis;
 DROP POLICY IF EXISTS "Authenticated users can manage intent analysis" ON lead_intent_analysis;
+DROP POLICY IF EXISTS "Authenticated users can view intent analysis" ON lead_intent_analysis;
 CREATE POLICY "Authenticated users can view intent analysis" ON lead_intent_analysis FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage intent analysis" ON lead_intent_analysis;
 CREATE POLICY "Authenticated users can manage intent analysis" ON lead_intent_analysis FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION get_latest_contact_intent_analysis(p_contact_id UUID)
@@ -458,7 +470,9 @@ CREATE INDEX IF NOT EXISTS idx_lead_mood_analysis_mood_label ON lead_mood_analys
 ALTER TABLE lead_mood_analysis ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view mood analysis" ON lead_mood_analysis;
 DROP POLICY IF EXISTS "Authenticated users can manage mood analysis" ON lead_mood_analysis;
+DROP POLICY IF EXISTS "Authenticated users can view mood analysis" ON lead_mood_analysis;
 CREATE POLICY "Authenticated users can view mood analysis" ON lead_mood_analysis FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Authenticated users can manage mood analysis" ON lead_mood_analysis;
 CREATE POLICY "Authenticated users can manage mood analysis" ON lead_mood_analysis FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 CREATE OR REPLACE FUNCTION get_latest_contact_mood_analysis(p_contact_id UUID)
@@ -492,7 +506,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_sendgrid_config_single ON sendgrid_config 
 ALTER TABLE sendgrid_config ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Authenticated users can view config" ON sendgrid_config;
 DROP POLICY IF EXISTS "Only admins can manage config" ON sendgrid_config;
+DROP POLICY IF EXISTS "Authenticated users can view config" ON sendgrid_config;
 CREATE POLICY "Authenticated users can view config" ON sendgrid_config FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Only admins can manage config" ON sendgrid_config;
 CREATE POLICY "Only admins can manage config" ON sendgrid_config FOR ALL TO authenticated USING (has_role(auth.uid(), 'admin'::app_role)) WITH CHECK (has_role(auth.uid(), 'admin'::app_role));
 
 CREATE OR REPLACE FUNCTION get_or_create_sendgrid_config()

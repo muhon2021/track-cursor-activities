@@ -4,8 +4,7 @@ INSERT INTO clients (name, email, company, phone, status, metadata) VALUES
   ('Jane Smith', 'jane.smith@techstart.io', 'TechStart Inc', '+1-555-0102', 'active', '{"notes": "Interested in AI features"}'),
   ('Michael Johnson', 'mjohnson@enterprise.com', 'Enterprise Solutions', '+1-555-0103', 'active', '{"notes": "Large account, quarterly meetings"}'),
   ('Sarah Williams', 'sarah.w@startup.co', 'Startup Co', '+1-555-0104', 'prospect', '{"notes": "Potential client, sent proposal"}'),
-  ('David Brown', 'dbrown@consulting.net', 'Brown Consulting', '+1-555-0105', 'active', '{"notes": "Monthly retainer client"}')
-ON CONFLICT (email) DO NOTHING;
+  ('David Brown', 'dbrown@consulting.net', 'Brown Consulting', '+1-555-0105', 'active', '{"notes": "Monthly retainer client"}');
 
 -- Insert test data for Knowledge Categories
 INSERT INTO knowledge_categories (name, slug, description, icon, color, sort_order) VALUES

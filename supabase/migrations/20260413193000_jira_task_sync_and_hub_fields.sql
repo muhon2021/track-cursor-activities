@@ -105,22 +105,26 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_task_time_logs_jira_worklog
 
 ALTER TABLE public.task_time_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can read task_time_logs" ON public.task_time_logs;
 CREATE POLICY "Authenticated users can read task_time_logs"
   ON public.task_time_logs FOR SELECT
   TO authenticated
   USING (auth.uid() IS NOT NULL);
 
+DROP POLICY IF EXISTS "Authenticated users can insert task_time_logs" ON public.task_time_logs;
 CREATE POLICY "Authenticated users can insert task_time_logs"
   ON public.task_time_logs FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() IS NOT NULL);
 
+DROP POLICY IF EXISTS "Users can update own task_time_logs" ON public.task_time_logs;
 CREATE POLICY "Users can update own task_time_logs"
   ON public.task_time_logs FOR UPDATE
   TO authenticated
   USING (user_id = auth.uid() OR public.has_role(auth.uid(), 'admin'))
   WITH CHECK (user_id = auth.uid() OR public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Users can delete own task_time_logs" ON public.task_time_logs;
 CREATE POLICY "Users can delete own task_time_logs"
   ON public.task_time_logs FOR DELETE
   TO authenticated

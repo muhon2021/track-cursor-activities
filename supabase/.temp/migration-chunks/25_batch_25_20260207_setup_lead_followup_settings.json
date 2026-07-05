@@ -1,0 +1,1 @@
+{"name":"batch_25_20260207_setup_lead_followup_settings","fileCount":6,"files":["20260207_create_sendgrid_config_table.sql","20260207_migrate_scheduled_emails_to_email_logs.sql","20260207_register_lead_followup_module.sql","20260207_seed_additional_email_templates.sql","20260207_seed_lead_followup_ai_agents.sql","20260207_setup_lead_followup_settings.sql"]}

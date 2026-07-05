@@ -104,7 +104,7 @@ export function buildCsaAuditReportHtml(report: CsaInsightsReport, audit: CsaAud
     <header id="top">
       <h1>${esc(audit.header.title)}</h1>
       <p class="meta">${esc(audit.header.display_name)} · ${periodLabel}</p>
-      <p class="meta">${audit.header.total_messages} prompts · ${audit.header.total_sessions} sessions</p>
+      <p class="meta">${audit.header.total_messages} prompts · ${audit.header.total_sessions} agents</p>
       ${generationMetaHtml}
     </header>
     <nav class="nav">
@@ -142,7 +142,7 @@ export function buildCsaAuditReportHtml(report: CsaInsightsReport, audit: CsaAud
       ${audit.what_you_work_on.areas
         .map(
           (a) =>
-            `<div class="card" style="margin:0.75rem 0"><strong>${esc(a.name)}</strong> — ${a.sessions} session(s)<br/><span class="muted">${esc(a.description)}</span></div>`,
+            `<div class="card" style="margin:0.75rem 0"><strong>${esc(a.name)}</strong> — ${a.sessions} agent(s)<br/><span class="muted">${esc(a.description)}</span></div>`,
         )
         .join("")}
     </section>

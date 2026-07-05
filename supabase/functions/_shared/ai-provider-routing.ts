@@ -59,19 +59,29 @@ async function getApiKey(
   supabase: SupabaseClient,
   secretName: string
 ): Promise<string | null> {
-  // First try environment variable
-  const envKey = Deno.env.get(secretName)
-  if (envKey) return envKey
+  const envAliases: Record<string, string[]> = {
+    GOOGLE_AI_API_KEY: ["GOOGLE_AI_API_KEY", "GEMINI_API_KEY"],
+    GEMINI_API_KEY: ["GEMINI_API_KEY", "GOOGLE_AI_API_KEY"],
+  };
+
+  const candidates = envAliases[secretName] ?? [secretName];
+  for (const name of candidates) {
+    const envKey = Deno.env.get(name);
+    if (envKey) return envKey;
+  }
 
   // Fallback to app_config
-  const { data, error } = await supabase
-    .from('app_config')
-    .select('value')
-    .eq('key', `integrations.${secretName.toLowerCase()}`)
-    .single()
+  for (const name of candidates) {
+    const { data, error } = await supabase
+      .from('app_config')
+      .select('value')
+      .eq('key', `integrations.${name.toLowerCase()}`)
+      .maybeSingle();
 
-  if (error || !data) return null
-  return data.value
+    if (!error && data?.value) return data.value as string;
+  }
+
+  return null;
 }
 
 // Get model by ID or get default model for category
@@ -145,6 +155,36 @@ export async function getModelByModelId(
 
   if (error || !data) return null
   return data as AIModel
+}
+
+/** First enabled chat model from preferences that has a configured API key */
+export async function getChatModelWithAvailableKey(
+  supabase: SupabaseClient,
+  preferredModelIds: string[],
+): Promise<AIModel | null> {
+  for (const modelId of preferredModelIds) {
+    const model = await getModelByModelId(supabase, modelId)
+    if (!model?.ai_providers?.api_key_secret_name) continue
+    const apiKey = await getApiKey(supabase, model.ai_providers.api_key_secret_name)
+    if (apiKey) return model
+  }
+
+  const { data: models } = await supabase
+    .from('ai_models')
+    .select('*, ai_providers(*)')
+    .eq('category', 'chat')
+    .eq('enabled', true)
+    .order('is_default', { ascending: false })
+
+  for (const row of models || []) {
+    const model = row as AIModel
+    const secretName = model.ai_providers?.api_key_secret_name
+    if (!secretName) continue
+    const apiKey = await getApiKey(supabase, secretName)
+    if (apiKey) return model
+  }
+
+  return null
 }
 
 // Chat completion with OpenAI
@@ -223,7 +263,7 @@ async function chatGoogle(
 ): Promise<ChatCompletionResponse> {
   const model = request.model || 'gemini-2.5-flash'
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: {

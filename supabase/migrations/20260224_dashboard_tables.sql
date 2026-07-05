@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.user_role_preferences (
 
 ALTER TABLE public.user_role_preferences ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "users_manage_own_role_prefs" ON public.user_role_preferences;
 CREATE POLICY "users_manage_own_role_prefs"
   ON public.user_role_preferences
   FOR ALL
@@ -40,6 +41,7 @@ CREATE POLICY "users_manage_own_role_prefs"
   WITH CHECK (user_id = auth.uid());
 
 -- Admins can read all preferences (for user management)
+DROP POLICY IF EXISTS "admins_read_all_role_prefs" ON public.user_role_preferences;
 CREATE POLICY "admins_read_all_role_prefs"
   ON public.user_role_preferences
   FOR SELECT
@@ -76,12 +78,14 @@ CREATE TABLE IF NOT EXISTS public.dashboard_widgets (
 -- Public read access (no sensitive data)
 ALTER TABLE public.dashboard_widgets ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "authenticated_read_widgets" ON public.dashboard_widgets;
 CREATE POLICY "authenticated_read_widgets"
   ON public.dashboard_widgets
   FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "admins_manage_widgets" ON public.dashboard_widgets;
 CREATE POLICY "admins_manage_widgets"
   ON public.dashboard_widgets
   FOR ALL
@@ -121,6 +125,7 @@ CREATE TABLE IF NOT EXISTS public.project_at_risk_flags (
 ALTER TABLE public.project_at_risk_flags ENABLE ROW LEVEL SECURITY;
 
 -- Users can read flags for projects they own or created
+DROP POLICY IF EXISTS "project_owners_read_risk_flags" ON public.project_at_risk_flags;
 CREATE POLICY "project_owners_read_risk_flags"
   ON public.project_at_risk_flags
   FOR SELECT
@@ -133,6 +138,7 @@ CREATE POLICY "project_owners_read_risk_flags"
     )
   );
 
+DROP POLICY IF EXISTS "admins_manage_risk_flags" ON public.project_at_risk_flags;
 CREATE POLICY "admins_manage_risk_flags"
   ON public.project_at_risk_flags
   FOR ALL
@@ -169,12 +175,14 @@ CREATE TABLE IF NOT EXISTS public.ai_digest_logs (
 
 ALTER TABLE public.ai_digest_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "users_read_own_digests" ON public.ai_digest_logs;
 CREATE POLICY "users_read_own_digests"
   ON public.ai_digest_logs
   FOR SELECT
   TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "users_update_own_digests" ON public.ai_digest_logs;
 CREATE POLICY "users_update_own_digests"
   ON public.ai_digest_logs
   FOR UPDATE

@@ -150,16 +150,19 @@ DROP POLICY IF EXISTS "Authenticated users can read float_synced_people" ON publ
 DROP POLICY IF EXISTS "Authenticated users can read float_synced_projects" ON public.float_synced_projects;
 DROP POLICY IF EXISTS "Authenticated users can read float_synced_allocations" ON public.float_synced_allocations;
 
+DROP POLICY IF EXISTS "Authenticated users can read float_synced_people" ON public.float_synced_people;
 CREATE POLICY "Authenticated users can read float_synced_people"
   ON public.float_synced_people FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can read float_synced_projects" ON public.float_synced_projects;
 CREATE POLICY "Authenticated users can read float_synced_projects"
   ON public.float_synced_projects FOR SELECT
   TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can read float_synced_allocations" ON public.float_synced_allocations;
 CREATE POLICY "Authenticated users can read float_synced_allocations"
   ON public.float_synced_allocations FOR SELECT
   TO authenticated

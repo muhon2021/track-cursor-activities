@@ -63,7 +63,7 @@ export default function ProductivityAuditPage() {
       } else {
         toast.warning(
           result.message ??
-            "No sessions with prompts in the selected range. Users need hook data before reports can be generated.",
+            "No agents with prompts in the selected range. Users need hook data before reports can be generated.",
         );
       }
     } catch (e) {
@@ -115,7 +115,7 @@ export default function ProductivityAuditPage() {
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              Showing Cursor activity for <span className="font-medium">{periodLabel}</span>. Session
+              Showing Cursor activity for <span className="font-medium">{periodLabel}</span>. Agent
               and prompt counts match the selected range (max 30 days). Regenerate audits after
               changing the range or when new hook data arrives.
             </AlertDescription>
@@ -162,7 +162,7 @@ export default function ProductivityAuditPage() {
                   <TableRow>
                     <TableHead>User</TableHead>
                     <TableHead>Email</TableHead>
-                    <TableHead>Sessions</TableHead>
+                    <TableHead>Agents</TableHead>
                     <TableHead>Prompts</TableHead>
                     <TableHead>Generated</TableHead>
                     <TableHead />

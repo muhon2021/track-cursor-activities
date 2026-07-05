@@ -48,7 +48,7 @@ export default function ProductivityAuditUserPage() {
       } else {
         toast.warning(
           result.message ??
-            "No sessions with prompts in the selected range. Capture usage via hooks first.",
+            "No agents with prompts in the selected range. Capture usage via hooks first.",
         );
       }
     } catch (e) {
@@ -111,8 +111,8 @@ export default function ProductivityAuditUserPage() {
           <AlertDescription className="space-y-3">
             <p>
               {sessions.length > 0
-                ? `${sessions.length} session(s) captured for ${periodLabel} but no audit report yet. Regenerate to build one.`
-                : `No report for ${periodLabel}. Capture sessions via hooks, then regenerate.`}
+                ? `${sessions.length} agent(s) captured for ${periodLabel} but no audit report yet. Regenerate to build one.`
+                : `No report for ${periodLabel}. Capture agents via hooks, then regenerate.`}
             </p>
             <Button size="sm" onClick={handleRegenerate} disabled={generateInsights.isPending}>
               {generateInsights.isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}

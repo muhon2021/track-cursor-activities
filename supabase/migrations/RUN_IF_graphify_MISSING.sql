@@ -547,6 +547,7 @@ ALTER TABLE public.graphify_config ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.graphify_sync_jobs ENABLE ROW LEVEL SECURITY;
 
 -- graph_entities
+DROP POLICY IF EXISTS "graph_entities_select" ON public.graph_entities;
 CREATE POLICY "graph_entities_select"
   ON public.graph_entities FOR SELECT TO authenticated
   USING (
@@ -554,6 +555,7 @@ CREATE POLICY "graph_entities_select"
     AND public.graphify_can_access_entity(auth.uid(), id)
   );
 
+DROP POLICY IF EXISTS "graph_entities_manage" ON public.graph_entities;
 CREATE POLICY "graph_entities_manage"
   ON public.graph_entities FOR ALL TO authenticated
   USING (
@@ -566,6 +568,7 @@ CREATE POLICY "graph_entities_manage"
   );
 
 -- graph_entity_aliases
+DROP POLICY IF EXISTS "graph_aliases_select" ON public.graph_entity_aliases;
 CREATE POLICY "graph_aliases_select"
   ON public.graph_entity_aliases FOR SELECT TO authenticated
   USING (
@@ -573,6 +576,7 @@ CREATE POLICY "graph_aliases_select"
     AND public.graphify_can_access_entity(auth.uid(), entity_id)
   );
 
+DROP POLICY IF EXISTS "graph_aliases_manage" ON public.graph_entity_aliases;
 CREATE POLICY "graph_aliases_manage"
   ON public.graph_entity_aliases FOR ALL TO authenticated
   USING (
@@ -585,6 +589,7 @@ CREATE POLICY "graph_aliases_manage"
   );
 
 -- graph_relationships
+DROP POLICY IF EXISTS "graph_relationships_select" ON public.graph_relationships;
 CREATE POLICY "graph_relationships_select"
   ON public.graph_relationships FOR SELECT TO authenticated
   USING (
@@ -593,6 +598,7 @@ CREATE POLICY "graph_relationships_select"
     AND public.graphify_can_access_entity(auth.uid(), target_entity_id)
   );
 
+DROP POLICY IF EXISTS "graph_relationships_manage" ON public.graph_relationships;
 CREATE POLICY "graph_relationships_manage"
   ON public.graph_relationships FOR ALL TO authenticated
   USING (
@@ -605,6 +611,7 @@ CREATE POLICY "graph_relationships_manage"
   );
 
 -- graph_memory_links
+DROP POLICY IF EXISTS "graph_memory_links_select" ON public.graph_memory_links;
 CREATE POLICY "graph_memory_links_select"
   ON public.graph_memory_links FOR SELECT TO authenticated
   USING (
@@ -612,6 +619,7 @@ CREATE POLICY "graph_memory_links_select"
     AND public.graphify_can_access_entity(auth.uid(), entity_id)
   );
 
+DROP POLICY IF EXISTS "graph_memory_links_manage" ON public.graph_memory_links;
 CREATE POLICY "graph_memory_links_manage"
   ON public.graph_memory_links FOR ALL TO authenticated
   USING (
@@ -624,23 +632,28 @@ CREATE POLICY "graph_memory_links_manage"
   );
 
 -- graph_query_logs
+DROP POLICY IF EXISTS "graph_query_logs_select_own" ON public.graph_query_logs;
 CREATE POLICY "graph_query_logs_select_own"
   ON public.graph_query_logs FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "graph_query_logs_select_admin" ON public.graph_query_logs;
 CREATE POLICY "graph_query_logs_select_admin"
   ON public.graph_query_logs FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin') OR public.has_permission(auth.uid(), 'graphify.manage'));
 
+DROP POLICY IF EXISTS "graph_query_logs_insert" ON public.graph_query_logs;
 CREATE POLICY "graph_query_logs_insert"
   ON public.graph_query_logs FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid() OR public.has_role(auth.uid(), 'admin'));
 
 -- graphify_config
+DROP POLICY IF EXISTS "graphify_config_select" ON public.graphify_config;
 CREATE POLICY "graphify_config_select"
   ON public.graphify_config FOR SELECT TO authenticated
   USING (tenant_id = public.get_user_tenant_id());
 
+DROP POLICY IF EXISTS "graphify_config_manage" ON public.graphify_config;
 CREATE POLICY "graphify_config_manage"
   ON public.graphify_config FOR ALL TO authenticated
   USING (
@@ -653,6 +666,7 @@ CREATE POLICY "graphify_config_manage"
   );
 
 -- graphify_sync_jobs
+DROP POLICY IF EXISTS "graphify_sync_jobs_select" ON public.graphify_sync_jobs;
 CREATE POLICY "graphify_sync_jobs_select"
   ON public.graphify_sync_jobs FOR SELECT TO authenticated
   USING (
@@ -660,6 +674,7 @@ CREATE POLICY "graphify_sync_jobs_select"
     AND (public.has_role(auth.uid(), 'admin') OR public.has_permission(auth.uid(), 'graphify.manage'))
   );
 
+DROP POLICY IF EXISTS "graphify_sync_jobs_manage" ON public.graphify_sync_jobs;
 CREATE POLICY "graphify_sync_jobs_manage"
   ON public.graphify_sync_jobs FOR ALL TO authenticated
   USING (

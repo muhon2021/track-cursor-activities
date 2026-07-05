@@ -34,23 +34,28 @@ CREATE INDEX IF NOT EXISTS idx_graphify_traversal_cache_lookup
 
 ALTER TABLE public.graphify_traversal_cache ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "graphify_traversal_cache_select_own" ON public.graphify_traversal_cache;
 CREATE POLICY "graphify_traversal_cache_select_own"
   ON public.graphify_traversal_cache FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "graphify_traversal_cache_insert_own" ON public.graphify_traversal_cache;
 CREATE POLICY "graphify_traversal_cache_insert_own"
   ON public.graphify_traversal_cache FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "graphify_traversal_cache_update_own" ON public.graphify_traversal_cache;
 CREATE POLICY "graphify_traversal_cache_update_own"
   ON public.graphify_traversal_cache FOR UPDATE TO authenticated
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "graphify_traversal_cache_delete_own" ON public.graphify_traversal_cache;
 CREATE POLICY "graphify_traversal_cache_delete_own"
   ON public.graphify_traversal_cache FOR DELETE TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "graphify_traversal_cache_manage_service" ON public.graphify_traversal_cache;
 CREATE POLICY "graphify_traversal_cache_manage_service"
   ON public.graphify_traversal_cache FOR ALL TO service_role
   USING (true)

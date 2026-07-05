@@ -1,5 +1,7 @@
+SET search_path TO public, extensions;
+
 -- Enable pgvector extension if not already enabled
-CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA extensions;
 
 -- Create match_embeddings function for semantic search
 CREATE OR REPLACE FUNCTION match_embeddings(
@@ -17,7 +19,8 @@ RETURNS TABLE (
   similarity float
 )
 LANGUAGE plpgsql
-AS $$
+SET search_path = public, extensions
+AS $
 BEGIN
   RETURN QUERY
   SELECT
@@ -37,7 +40,7 @@ $$;
 
 -- Create index on embeddings for faster vector search
 CREATE INDEX IF NOT EXISTS idx_embeddings_vector ON embeddings
-USING ivfflat (embedding vector_cosine_ops)
+USING ivfflat (embedding extensions.vector_cosine_ops)
 WITH (lists = 100);
 
 -- Add comment

@@ -7,6 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Brain, Shield, Crown, Briefcase, Code } from "lucide-react";
+import {
+  HACKATHON_DEMO_ADMIN,
+  isHackathonMode,
+} from "@/lib/hackathon";
+
+const CSA_ADMIN_PATH = "/admin/ai/productivity-audit";
 
 const TEST_ACCOUNTS = [
   { label: "CEO / Owner", email: "ceo@collabai.software", role: "owner", icon: Crown, color: "border-amber-500/30 hover:bg-amber-500/10" },
@@ -19,6 +25,7 @@ const TEST_PASSWORD = "Demo@123"; // Must match docs/public_website/features.md;
 const isProduction = typeof window !== "undefined" && window.location.hostname === "spark-start-kit-86.lovable.app";
 
 export default function Login() {
+  const hackathon = isHackathonMode();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,6 +33,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const { user, signIn, signInWithGoogle, signOut } = useAuth();
   const navigate = useNavigate();
+
+  const postLoginPath = hackathon ? CSA_ADMIN_PATH : "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +44,7 @@ export default function Login() {
 
     try {
       await signIn(email, password);
-      navigate("/dashboard");
+      navigate(postLoginPath);
     } catch (error: any) {
       console.error("Login error:", error);
       setError(error.message || "Failed to sign in");
@@ -61,13 +70,15 @@ export default function Login() {
     try {
       if (user) await signOut();
       await signIn(acctEmail, TEST_PASSWORD);
-      navigate("/dashboard");
+      navigate(postLoginPath);
     } catch (err: any) {
       setError(err.message || "Quick login failed");
     } finally {
       setQuickLoading(null);
     }
   };
+
+  const handleHackathonAdminLogin = () => handleQuickLogin(HACKATHON_DEMO_ADMIN.email);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -77,11 +88,53 @@ export default function Login() {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary shadow-sm">
             <Brain className="h-7 w-7 text-primary-foreground" />
           </div>
-          <h1 className="text-xl font-semibold text-foreground">Control Tower</h1>
+          <h1 className="text-xl font-semibold text-foreground">
+            {hackathon ? "AI Productivity Audit" : "Control Tower"}
+          </h1>
+          {hackathon && (
+            <p className="text-sm text-muted-foreground text-center">
+              Hackathon demo — Cursor Self Analyser
+            </p>
+          )}
         </div>
 
-        {/* Quick Login — hidden in production */}
-        {!isProduction && (
+        {/* Hackathon: single admin demo login */}
+        {hackathon && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-semibold">Admin Demo Login</CardTitle>
+              <CardDescription className="text-xs">
+                One-click access to the AI Productivity Audit admin panel
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-4">
+              <Button
+                type="button"
+                className="h-11 w-full font-medium"
+                onClick={handleHackathonAdminLogin}
+                disabled={!!quickLoading}
+              >
+                {quickLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    <Shield className="mr-2 h-4 w-4" />
+                    Admin Demo Login
+                  </>
+                )}
+              </Button>
+              <p className="mt-2 text-center text-[10px] text-muted-foreground">
+                {HACKATHON_DEMO_ADMIN.email}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Quick Login — hidden in production and hackathon mode */}
+        {!isProduction && !hackathon && (
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold">🧪 Quick Login</CardTitle>
@@ -114,57 +167,61 @@ export default function Login() {
           </Card>
         )}
 
-        <Card className="shadow-premium">
-          <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-xl font-semibold">Welcome back</CardTitle>
-            <CardDescription>Sign in to your account to continue</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4">
-              {error && (
-                <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
-                  {error}
-                </div>
-              )}
+        {error && (
+          <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+            {error}
+          </div>
+        )}
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
-                <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={loading} className="h-10" />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                  <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-primary">Forgot password?</Link>
+        {!hackathon && (
+          <Card className="shadow-premium">
+            <CardHeader className="space-y-1 pb-4">
+              <CardTitle className="text-xl font-semibold">Welcome back</CardTitle>
+              <CardDescription>Sign in to your account to continue</CardDescription>
+            </CardHeader>
+            <form onSubmit={handleSubmit}>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                  <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={loading} className="h-10" />
                 </div>
-                <Input id="password" type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} className="h-10" />
-              </div>
-            </CardContent>
-            <CardFooter className="flex-col space-y-4 pt-2">
-              <Button type="submit" className="h-10 w-full font-medium" disabled={loading}>
-                {loading ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing in...</>) : "Sign in"}
-              </Button>
-              <div className="relative w-full">
-                <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
-                <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">Or continue with</span></div>
-              </div>
-              <Button type="button" variant="outline" className="h-10 w-full font-medium" onClick={handleGoogleSignIn} disabled={loading}>
-                <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-                </svg>
-                Sign in with Google
-              </Button>
-              <p className="text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link to="/signup" className="font-medium text-primary hover:underline">Sign up</Link>
-              </p>
-            </CardFooter>
-          </form>
-        </Card>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                    <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-primary">Forgot password?</Link>
+                  </div>
+                  <Input id="password" type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} className="h-10" />
+                </div>
+              </CardContent>
+              <CardFooter className="flex-col space-y-4 pt-2">
+                <Button type="submit" className="h-10 w-full font-medium" disabled={loading}>
+                  {loading ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing in...</>) : "Sign in"}
+                </Button>
+                <div className="relative w-full">
+                  <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
+                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">Or continue with</span></div>
+                </div>
+                <Button type="button" variant="outline" className="h-10 w-full font-medium" onClick={handleGoogleSignIn} disabled={loading}>
+                  <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                  </svg>
+                  Sign in with Google
+                </Button>
+                <p className="text-center text-sm text-muted-foreground">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="font-medium text-primary hover:underline">Sign up</Link>
+                </p>
+              </CardFooter>
+            </form>
+          </Card>
+        )}
 
-        <p className="text-center text-xs text-muted-foreground">Protected by enterprise-grade security.</p>
+        <p className="text-center text-xs text-muted-foreground">
+          {hackathon ? "Demo mode — MFA and permission checks bypassed." : "Protected by enterprise-grade security."}
+        </p>
       </div>
     </div>
   );

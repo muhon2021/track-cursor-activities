@@ -39,6 +39,9 @@ export const env = {
     admin: envBool("VITE_MODULE_ADMIN", true),
   },
 
+  // Hackathon CSA demo (skip MFA, permissions RPC, security gates)
+  hackathonMode: envBool("VITE_HACKATHON_MODE", false),
+
   // Runtime info
   isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,

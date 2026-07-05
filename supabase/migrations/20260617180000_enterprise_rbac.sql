@@ -16,9 +16,11 @@ CREATE TABLE IF NOT EXISTS public.tenants (
 
 ALTER TABLE public.tenants ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view tenants" ON public.tenants;
 CREATE POLICY "Authenticated users can view tenants"
   ON public.tenants FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage tenants" ON public.tenants;
 CREATE POLICY "Admins can manage tenants"
   ON public.tenants FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -47,9 +49,11 @@ CREATE INDEX IF NOT EXISTS idx_permissions_key ON public.permissions(key);
 
 ALTER TABLE public.permissions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view permissions" ON public.permissions;
 CREATE POLICY "Authenticated users can view permissions"
   ON public.permissions FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage permissions" ON public.permissions;
 CREATE POLICY "Admins can manage permissions"
   ON public.permissions FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -206,9 +210,11 @@ CREATE INDEX IF NOT EXISTS idx_role_permissions_permission ON public.role_permis
 
 ALTER TABLE public.role_permissions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view role permissions" ON public.role_permissions;
 CREATE POLICY "Authenticated users can view role permissions"
   ON public.role_permissions FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage role permissions" ON public.role_permissions;
 CREATE POLICY "Admins can manage role permissions"
   ON public.role_permissions FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
@@ -341,15 +347,18 @@ CREATE INDEX IF NOT EXISTS idx_onboarding_progress_user ON public.onboarding_pro
 
 ALTER TABLE public.onboarding_progress ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own onboarding progress" ON public.onboarding_progress;
 CREATE POLICY "Users can view own onboarding progress"
   ON public.onboarding_progress FOR SELECT TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage own onboarding progress" ON public.onboarding_progress;
 CREATE POLICY "Users can manage own onboarding progress"
   ON public.onboarding_progress FOR ALL TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can view all onboarding progress" ON public.onboarding_progress;
 CREATE POLICY "Admins can view all onboarding progress"
   ON public.onboarding_progress FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));
@@ -400,7 +409,8 @@ BEGIN
     WHERE schemaname = 'public' AND tablename = 'sso_configurations'
       AND policyname = 'Admins can manage SSO configs'
   ) THEN
-    CREATE POLICY "Admins can manage SSO configs"
+    DROP POLICY IF EXISTS "Admins can manage SSO configs" ON public.sso_configurations;
+CREATE POLICY "Admins can manage SSO configs"
       ON public.sso_configurations FOR ALL TO authenticated
       USING (public.has_role(auth.uid(), 'admin'))
       WITH CHECK (public.has_role(auth.uid(), 'admin'));
@@ -411,7 +421,8 @@ BEGIN
     WHERE schemaname = 'public' AND tablename = 'sso_configurations'
       AND policyname = 'Public can view enabled SSO providers'
   ) THEN
-    CREATE POLICY "Public can view enabled SSO providers"
+    DROP POLICY IF EXISTS "Public can view enabled SSO providers" ON public.sso_configurations;
+CREATE POLICY "Public can view enabled SSO providers"
       ON public.sso_configurations FOR SELECT TO anon
       USING (is_enabled = true);
   END IF;
@@ -619,6 +630,7 @@ ALTER TABLE public.user_roles ENABLE TRIGGER sync_user_app_role_on_change;
 -- ========================
 DROP POLICY IF EXISTS "Authenticated users can manage department users" ON public.department_users;
 
+DROP POLICY IF EXISTS "Users with permission can manage department users" ON public.department_users;
 CREATE POLICY "Users with permission can manage department users"
   ON public.department_users FOR ALL TO authenticated
   USING (

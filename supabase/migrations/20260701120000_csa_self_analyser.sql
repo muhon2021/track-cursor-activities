@@ -78,34 +78,43 @@ ALTER TABLE public.csa_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.csa_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.csa_insights_reports ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "csa_ingest_tokens_service_all" ON public.csa_ingest_tokens;
 CREATE POLICY "csa_ingest_tokens_service_all"
   ON public.csa_ingest_tokens FOR ALL TO service_role USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "csa_sessions_service_all" ON public.csa_sessions;
 CREATE POLICY "csa_sessions_service_all"
   ON public.csa_sessions FOR ALL TO service_role USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "csa_messages_service_all" ON public.csa_messages;
 CREATE POLICY "csa_messages_service_all"
   ON public.csa_messages FOR ALL TO service_role USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "csa_insights_reports_service_all" ON public.csa_insights_reports;
 CREATE POLICY "csa_insights_reports_service_all"
   ON public.csa_insights_reports FOR ALL TO service_role USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "csa_ingest_tokens_select_own" ON public.csa_ingest_tokens;
 CREATE POLICY "csa_ingest_tokens_select_own"
   ON public.csa_ingest_tokens FOR SELECT TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "csa_ingest_tokens_insert_own" ON public.csa_ingest_tokens;
 CREATE POLICY "csa_ingest_tokens_insert_own"
   ON public.csa_ingest_tokens FOR INSERT TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "csa_ingest_tokens_update_own" ON public.csa_ingest_tokens;
 CREATE POLICY "csa_ingest_tokens_update_own"
   ON public.csa_ingest_tokens FOR UPDATE TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "csa_sessions_select_own_or_admin" ON public.csa_sessions;
 CREATE POLICY "csa_sessions_select_own_or_admin"
   ON public.csa_sessions FOR SELECT TO authenticated
   USING (auth.uid() = user_id OR public.is_admin());
 
+DROP POLICY IF EXISTS "csa_insights_reports_select_own_or_admin" ON public.csa_insights_reports;
 CREATE POLICY "csa_insights_reports_select_own_or_admin"
   ON public.csa_insights_reports FOR SELECT TO authenticated
   USING (auth.uid() = user_id OR public.is_admin());

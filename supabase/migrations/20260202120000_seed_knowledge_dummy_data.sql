@@ -57,28 +57,26 @@ END $$;
 -- 2) Seed knowledge_sources (admin-managed) – schema has no slug; use name + WHERE NOT EXISTS
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM public.knowledge_sources WHERE name = 'Internal Handbook') THEN
-    INSERT INTO public.knowledge_sources (name, source_type, config, is_active, last_synced_at, created_at, updated_at)
+  IF NOT EXISTS (SELECT 1 FROM public.knowledge_sources WHERE slug = 'internal-handbook') THEN
+    INSERT INTO public.knowledge_sources (name, slug, description, source_type, sync_config, metadata)
     VALUES (
       'Internal Handbook',
-      'url',
-      jsonb_build_object('demo', true, 'url', 'https://example.com/docs/handbook', 'description', 'Core internal handbook and company policies.'),
-      true,
-      NULL,
-      now(),
-      now()
+      'internal-handbook',
+      'Core internal handbook and company policies.',
+      'other',
+      jsonb_build_object('url', 'https://example.com/docs/handbook'),
+      jsonb_build_object('demo', true)
     );
   END IF;
-  IF NOT EXISTS (SELECT 1 FROM public.knowledge_sources WHERE name = 'Client Templates') THEN
-    INSERT INTO public.knowledge_sources (name, source_type, config, is_active, last_synced_at, created_at, updated_at)
+  IF NOT EXISTS (SELECT 1 FROM public.knowledge_sources WHERE slug = 'client-templates') THEN
+    INSERT INTO public.knowledge_sources (name, slug, description, source_type, sync_config, metadata)
     VALUES (
       'Client Templates',
+      'client-templates',
+      'Proposal, SOW, and onboarding templates.',
       'google_drive',
-      jsonb_build_object('demo', true, 'url', 'https://drive.google.com/demo-client-templates', 'description', 'Proposal, SOW, and onboarding templates.'),
-      true,
-      NULL,
-      now(),
-      now()
+      jsonb_build_object('folder', 'demo-client-templates'),
+      jsonb_build_object('demo', true)
     );
   END IF;
 END $$;
@@ -142,8 +140,8 @@ DECLARE
 BEGIN
   SELECT id INTO v_cat_general FROM public.knowledge_categories WHERE slug = 'general-knowledge';
   SELECT id INTO v_cat_clients FROM public.knowledge_categories WHERE slug = 'client-playbooks';
-  SELECT id INTO v_src_internal FROM public.knowledge_sources WHERE name = 'Internal Handbook';
-  SELECT id INTO v_src_client_templates FROM public.knowledge_sources WHERE name = 'Client Templates';
+  SELECT id INTO v_src_internal FROM public.knowledge_sources WHERE slug = 'internal-handbook';
+  SELECT id INTO v_src_client_templates FROM public.knowledge_sources WHERE slug = 'client-templates';
 
   IF v_cat_general IS NOT NULL AND v_src_internal IS NOT NULL THEN
     INSERT INTO public.knowledge_files (

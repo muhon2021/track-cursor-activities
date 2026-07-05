@@ -4,6 +4,7 @@ DROP POLICY IF EXISTS "Service role can manage webhook logs" ON public.graph_web
 
 -- Create a policy that only allows authenticated users to read their own subscription logs
 -- Edge functions with service_role key bypass RLS entirely
+DROP POLICY IF EXISTS "Users can view logs for their subscriptions" ON public.graph_webhook_logs;
 CREATE POLICY "Users can view logs for their subscriptions"
   ON public.graph_webhook_logs
   FOR SELECT

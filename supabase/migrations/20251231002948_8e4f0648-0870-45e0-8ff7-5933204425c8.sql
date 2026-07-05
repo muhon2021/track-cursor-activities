@@ -13,6 +13,7 @@ INSERT INTO storage.buckets (id, name, public) VALUES ('knowledge-files', 'knowl
 -- Users can only access their own folder: {user_id}/
 -- ============================================
 
+DROP POLICY IF EXISTS "Users can upload to their own folder" ON storage.objects;
 CREATE POLICY "Users can upload to their own folder"
 ON storage.objects FOR INSERT
 TO authenticated
@@ -21,6 +22,7 @@ WITH CHECK (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
+DROP POLICY IF EXISTS "Users can view their own files" ON storage.objects;
 CREATE POLICY "Users can view their own files"
 ON storage.objects FOR SELECT
 TO authenticated
@@ -29,6 +31,7 @@ USING (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
+DROP POLICY IF EXISTS "Users can update their own files" ON storage.objects;
 CREATE POLICY "Users can update their own files"
 ON storage.objects FOR UPDATE
 TO authenticated
@@ -37,6 +40,7 @@ USING (
   AND auth.uid()::text = (storage.foldername(name))[1]
 );
 
+DROP POLICY IF EXISTS "Users can delete their own files" ON storage.objects;
 CREATE POLICY "Users can delete their own files"
 ON storage.objects FOR DELETE
 TO authenticated
@@ -50,6 +54,7 @@ USING (
 -- Authenticated users can read, only service role can write
 -- ============================================
 
+DROP POLICY IF EXISTS "Authenticated users can view meeting recordings" ON storage.objects;
 CREATE POLICY "Authenticated users can view meeting recordings"
 ON storage.objects FOR SELECT
 TO authenticated
@@ -62,11 +67,13 @@ USING (bucket_id = 'meeting-recordings');
 -- Authenticated can read, admins can write
 -- ============================================
 
+DROP POLICY IF EXISTS "Authenticated users can view knowledge files" ON storage.objects;
 CREATE POLICY "Authenticated users can view knowledge files"
 ON storage.objects FOR SELECT
 TO authenticated
 USING (bucket_id = 'knowledge-files');
 
+DROP POLICY IF EXISTS "Admins can upload knowledge files" ON storage.objects;
 CREATE POLICY "Admins can upload knowledge files"
 ON storage.objects FOR INSERT
 TO authenticated
@@ -75,6 +82,7 @@ WITH CHECK (
   AND public.has_role(auth.uid(), 'admin')
 );
 
+DROP POLICY IF EXISTS "Admins can update knowledge files" ON storage.objects;
 CREATE POLICY "Admins can update knowledge files"
 ON storage.objects FOR UPDATE
 TO authenticated
@@ -83,6 +91,7 @@ USING (
   AND public.has_role(auth.uid(), 'admin')
 );
 
+DROP POLICY IF EXISTS "Admins can delete knowledge files" ON storage.objects;
 CREATE POLICY "Admins can delete knowledge files"
 ON storage.objects FOR DELETE
 TO authenticated

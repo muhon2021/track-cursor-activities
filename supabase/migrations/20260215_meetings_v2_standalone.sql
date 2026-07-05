@@ -150,47 +150,59 @@ CREATE INDEX IF NOT EXISTS idx_categorizations_file ON meeting_categorizations(m
 -- ========================
 ALTER TABLE meetings_v2 ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read all meetings" ON meetings_v2;
 CREATE POLICY "Users can read all meetings" ON meetings_v2
   FOR SELECT USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can create meetings" ON meetings_v2;
 CREATE POLICY "Users can create meetings" ON meetings_v2
   FOR INSERT WITH CHECK (auth.uid() = created_by);
 
+DROP POLICY IF EXISTS "Users can update own meetings" ON meetings_v2;
 CREATE POLICY "Users can update own meetings" ON meetings_v2
   FOR UPDATE USING (auth.uid() = created_by);
 
+DROP POLICY IF EXISTS "Users can delete own meetings" ON meetings_v2;
 CREATE POLICY "Users can delete own meetings" ON meetings_v2
   FOR DELETE USING (auth.uid() = created_by);
 
 ALTER TABLE meeting_participants_v2 ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read all participants" ON meeting_participants_v2;
 CREATE POLICY "Users can read all participants" ON meeting_participants_v2
   FOR SELECT USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can manage participants" ON meeting_participants_v2;
 CREATE POLICY "Users can manage participants" ON meeting_participants_v2
   FOR ALL USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
 ALTER TABLE meeting_agenda_items ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read all agenda items" ON meeting_agenda_items;
 CREATE POLICY "Users can read all agenda items" ON meeting_agenda_items
   FOR SELECT USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can manage agenda items" ON meeting_agenda_items;
 CREATE POLICY "Users can manage agenda items" ON meeting_agenda_items
   FOR ALL USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
 ALTER TABLE meeting_takeaways ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read all takeaways" ON meeting_takeaways;
 CREATE POLICY "Users can read all takeaways" ON meeting_takeaways
   FOR SELECT USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can manage takeaways" ON meeting_takeaways;
 CREATE POLICY "Users can manage takeaways" ON meeting_takeaways
   FOR ALL USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
 ALTER TABLE meeting_categorizations ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can read all categorizations" ON meeting_categorizations;
 CREATE POLICY "Users can read all categorizations" ON meeting_categorizations
   FOR SELECT USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Users can manage categorizations" ON meeting_categorizations;
 CREATE POLICY "Users can manage categorizations" ON meeting_categorizations
   FOR ALL USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
@@ -383,7 +395,8 @@ BEGIN
     AND policyname = 'Users can read all transcripts'
   ) THEN
     ALTER TABLE meeting_files ENABLE ROW LEVEL SECURITY;
-    CREATE POLICY "Users can read all transcripts" ON meeting_files
+    DROP POLICY IF EXISTS "Users can read all transcripts" ON meeting_files;
+CREATE POLICY "Users can read all transcripts" ON meeting_files
       FOR SELECT USING (auth.role() = 'authenticated');
   END IF;
 END $$;

@@ -2,17 +2,23 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMfaGate } from "@/hooks/useMfaGate";
+import { isHackathonMode } from "@/lib/hackathon";
 import { Loader2 } from "lucide-react";
 
 export function ProtectedRoute() {
   const { user, profile, loading, profileLoading, signOut } = useAuth();
+  const hackathon = isHackathonMode();
   const { isLoading: mfaLoading, mustEnrollNow } = useMfaGate();
   const location = useLocation();
 
   // Wait for both auth session AND profile (including role) to finish loading.
   // Rendering child routes while profileLoading is true would let role-gated
   // components briefly render with an incomplete profile, causing access flickers.
-  if (loading || (profileLoading && !profile) || (!!user && mfaLoading && !profile)) {
+  if (
+    loading ||
+    (profileLoading && !profile && !hackathon) ||
+    (!hackathon && !!user && mfaLoading && !profile)
+  ) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -24,15 +30,16 @@ export function ProtectedRoute() {
     return <Navigate to="/login" replace />;
   }
 
-  if (profile?.is_active === false) {
+  if (!hackathon && profile?.is_active === false) {
     return <SuspendedScreen onSignOut={signOut} />;
   }
 
-  if (mustEnrollNow && location.pathname !== "/mfa/enroll") {
+  if (!hackathon && mustEnrollNow && location.pathname !== "/mfa/enroll") {
     return <Navigate to="/mfa/enroll" replace />;
   }
 
   if (
+    !hackathon &&
     profile?.requires_password_change === true &&
     location.pathname !== "/auth/password-expired"
   ) {

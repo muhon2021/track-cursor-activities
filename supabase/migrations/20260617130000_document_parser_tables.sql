@@ -35,6 +35,7 @@ CREATE INDEX IF NOT EXISTS idx_parsed_documents_version ON public.parsed_documen
 
 ALTER TABLE public.parsed_documents ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage parsed_documents" ON public.parsed_documents;
 CREATE POLICY "Admins can manage parsed_documents"
   ON public.parsed_documents FOR ALL
   TO authenticated
@@ -46,6 +47,7 @@ CREATE POLICY "Admins can manage parsed_documents"
     )
   );
 
+DROP POLICY IF EXISTS "Authenticated users can read parsed_documents" ON public.parsed_documents;
 CREATE POLICY "Authenticated users can read parsed_documents"
   ON public.parsed_documents FOR SELECT
   TO authenticated
@@ -68,6 +70,7 @@ CREATE INDEX IF NOT EXISTS idx_document_pages_number ON public.document_pages (d
 
 ALTER TABLE public.document_pages ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage document_pages" ON public.document_pages;
 CREATE POLICY "Admins can manage document_pages"
   ON public.document_pages FOR ALL
   TO authenticated
@@ -79,6 +82,7 @@ CREATE POLICY "Admins can manage document_pages"
     )
   );
 
+DROP POLICY IF EXISTS "Authenticated users can read document_pages" ON public.document_pages;
 CREATE POLICY "Authenticated users can read document_pages"
   ON public.document_pages FOR SELECT
   TO authenticated
@@ -103,6 +107,7 @@ CREATE INDEX IF NOT EXISTS idx_document_tables_document ON public.document_table
 
 ALTER TABLE public.document_tables ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage document_tables" ON public.document_tables;
 CREATE POLICY "Admins can manage document_tables"
   ON public.document_tables FOR ALL
   TO authenticated
@@ -114,6 +119,7 @@ CREATE POLICY "Admins can manage document_tables"
     )
   );
 
+DROP POLICY IF EXISTS "Authenticated users can read document_tables" ON public.document_tables;
 CREATE POLICY "Authenticated users can read document_tables"
   ON public.document_tables FOR SELECT
   TO authenticated
@@ -138,6 +144,7 @@ CREATE INDEX IF NOT EXISTS idx_document_images_document ON public.document_image
 
 ALTER TABLE public.document_images ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins can manage document_images" ON public.document_images;
 CREATE POLICY "Admins can manage document_images"
   ON public.document_images FOR ALL
   TO authenticated
@@ -149,6 +156,7 @@ CREATE POLICY "Admins can manage document_images"
     )
   );
 
+DROP POLICY IF EXISTS "Authenticated users can read document_images" ON public.document_images;
 CREATE POLICY "Authenticated users can read document_images"
   ON public.document_images FOR SELECT
   TO authenticated

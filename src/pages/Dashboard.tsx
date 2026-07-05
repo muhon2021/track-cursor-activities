@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { isHackathonMode } from "@/lib/hackathon";
 import { useAgencyRole } from "@/hooks/useAgencyRole";
 import { RoleSetupModal } from "@/components/dashboards/RoleSetupModal";
 import { useDashboardStats, useRecentActivity, getTimeAgo, useAITeamSummary } from "@/hooks/useDashboard";
@@ -76,6 +77,10 @@ export default function Dashboard() {
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: recentActivity, isLoading: activityLoading } = useRecentActivity();
   const { data: aiTeam, isLoading: aiTeamLoading } = useAITeamSummary();
+
+  if (isHackathonMode()) {
+    return <Navigate to="/admin/ai/productivity-audit" replace />;
+  }
 
   // Wait for auth to settle before routing — prevents flash to generic dashboard
   if (loading) return <DashboardFallback />;

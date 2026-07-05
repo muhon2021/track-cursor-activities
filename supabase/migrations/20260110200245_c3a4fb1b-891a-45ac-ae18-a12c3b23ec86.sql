@@ -43,21 +43,25 @@ ALTER TABLE public.graph_webhook_subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.graph_webhook_logs ENABLE ROW LEVEL SECURITY;
 
 -- RLS policies for subscriptions - users can only see their own
+DROP POLICY IF EXISTS "Users can view their own webhook subscriptions" ON public.graph_webhook_subscriptions;
 CREATE POLICY "Users can view their own webhook subscriptions"
   ON public.graph_webhook_subscriptions
   FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can create their own webhook subscriptions" ON public.graph_webhook_subscriptions;
 CREATE POLICY "Users can create their own webhook subscriptions"
   ON public.graph_webhook_subscriptions
   FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update their own webhook subscriptions" ON public.graph_webhook_subscriptions;
 CREATE POLICY "Users can update their own webhook subscriptions"
   ON public.graph_webhook_subscriptions
   FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete their own webhook subscriptions" ON public.graph_webhook_subscriptions;
 CREATE POLICY "Users can delete their own webhook subscriptions"
   ON public.graph_webhook_subscriptions
   FOR DELETE
@@ -65,6 +69,7 @@ CREATE POLICY "Users can delete their own webhook subscriptions"
 
 -- RLS policies for logs - service role only (edge functions)
 -- Users cannot directly access logs, only through API
+DROP POLICY IF EXISTS "Service role can manage webhook logs" ON public.graph_webhook_logs;
 CREATE POLICY "Service role can manage webhook logs"
   ON public.graph_webhook_logs
   FOR ALL

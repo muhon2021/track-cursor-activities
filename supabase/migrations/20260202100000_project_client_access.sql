@@ -74,21 +74,27 @@ ALTER TABLE public.project_client_access ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.project_client_comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.client_feedback ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view client access" ON public.project_client_access;
 CREATE POLICY "Authenticated users can view client access"
   ON public.project_client_access FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can insert client access" ON public.project_client_access;
 CREATE POLICY "Authenticated users can insert client access"
   ON public.project_client_access FOR INSERT TO authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Authenticated users can update client access" ON public.project_client_access;
 CREATE POLICY "Authenticated users can update client access"
   ON public.project_client_access FOR UPDATE TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage client comments" ON public.project_client_comments;
 CREATE POLICY "Authenticated users can manage client comments"
   ON public.project_client_comments FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Anyone can insert feedback" ON public.client_feedback;
 CREATE POLICY "Anyone can insert feedback"
   ON public.client_feedback FOR INSERT TO anon, authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Authenticated users can view feedback" ON public.client_feedback;
 CREATE POLICY "Authenticated users can view feedback"
   ON public.client_feedback FOR SELECT TO authenticated USING (true);
 

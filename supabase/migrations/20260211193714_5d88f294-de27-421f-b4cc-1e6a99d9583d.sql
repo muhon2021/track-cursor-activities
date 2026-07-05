@@ -41,12 +41,14 @@ CREATE INDEX IF NOT EXISTS idx_contacts_followup_status ON contacts(followup_sta
 
 -- Tighten RLS policies
 DROP POLICY IF EXISTS "Authenticated users can manage deals" ON deals;
+DROP POLICY IF EXISTS "Deal owners and creators can manage deals" ON deals;
 CREATE POLICY "Deal owners and creators can manage deals" ON deals
   FOR ALL TO authenticated
   USING (owner_id = auth.uid() OR created_by = auth.uid())
   WITH CHECK (owner_id = auth.uid() OR created_by = auth.uid());
 
 DROP POLICY IF EXISTS "Authenticated users can manage activities" ON deal_activities;
+DROP POLICY IF EXISTS "Deal activity authors and deal owners can manage activities" ON deal_activities;
 CREATE POLICY "Deal activity authors and deal owners can manage activities" ON deal_activities
   FOR ALL TO authenticated
   USING (
@@ -59,6 +61,7 @@ CREATE POLICY "Deal activity authors and deal owners can manage activities" ON d
   );
 
 DROP POLICY IF EXISTS "Authenticated users can manage deal comments" ON deal_comments;
+DROP POLICY IF EXISTS "Deal comment authors and deal owners can manage comments" ON deal_comments;
 CREATE POLICY "Deal comment authors and deal owners can manage comments" ON deal_comments
   FOR ALL TO authenticated
   USING (

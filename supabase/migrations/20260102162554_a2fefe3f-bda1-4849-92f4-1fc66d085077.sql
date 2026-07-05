@@ -20,26 +20,30 @@ CREATE INDEX IF NOT EXISTS idx_activity_logs_created_at ON public.activity_logs(
 -- Enable RLS
 ALTER TABLE public.activity_logs ENABLE ROW LEVEL SECURITY;
 
--- RLS Policies
--- Admins can view all activity logs
+-- RLS Policies (idempotent — table may already exist from 20260101000001)
+DROP POLICY IF EXISTS "Admins can view all activity logs" ON public.activity_logs;
 CREATE POLICY "Admins can view all activity logs"
   ON public.activity_logs
   FOR SELECT
   USING (has_role(auth.uid(), 'admin'::app_role));
 
--- Users can view their own activity logs
+DROP POLICY IF EXISTS "Users can view their own activity logs" ON public.activity_logs;
+DROP POLICY IF EXISTS "Users can view own activity logs" ON public.activity_logs;
+DROP POLICY IF EXISTS "Users can view their own activity logs" ON public.activity_logs;
 CREATE POLICY "Users can view their own activity logs"
   ON public.activity_logs
   FOR SELECT
   USING (auth.uid() = user_id);
 
--- Allow inserts via service role (edge function) or authenticated users for their own logs
+DROP POLICY IF EXISTS "Users can insert their own activity logs" ON public.activity_logs;
+DROP POLICY IF EXISTS "Service role can insert activity logs" ON public.activity_logs;
+DROP POLICY IF EXISTS "Users can insert their own activity logs" ON public.activity_logs;
 CREATE POLICY "Users can insert their own activity logs"
   ON public.activity_logs
   FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- Admins can delete old logs (for cleanup)
+DROP POLICY IF EXISTS "Admins can delete activity logs" ON public.activity_logs;
 CREATE POLICY "Admins can delete activity logs"
   ON public.activity_logs
   FOR DELETE

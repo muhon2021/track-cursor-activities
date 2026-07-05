@@ -1,3 +1,5 @@
+SET search_path TO public, extensions;
+
 /**
  * Agent Memory System Migration
  *
@@ -32,7 +34,7 @@ CREATE TABLE IF NOT EXISTS agent_memories (
   summary TEXT, -- Short summary for quick lookup
 
   -- Embedding for semantic search
-  embedding vector(1536), -- OpenAI ada-002 dimension
+  embedding extensions.vector(1536), -- OpenAI ada-002 dimension
 
   -- Source context
   source_type TEXT, -- 'conversation', 'feedback', 'observation', 'explicit'
@@ -71,7 +73,7 @@ CREATE INDEX IF NOT EXISTS idx_agent_memories_created_at ON agent_memories(creat
 
 -- Vector similarity search index (using ivfflat)
 CREATE INDEX IF NOT EXISTS idx_agent_memories_embedding ON agent_memories
-  USING ivfflat (embedding vector_cosine_ops)
+  USING ivfflat (embedding extensions.vector_cosine_ops)
   WITH (lists = 100);
 
 -- RLS Policies

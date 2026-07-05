@@ -15,7 +15,7 @@ export function CsaTeamStatsPanel({ summary, isLoading }: CsaTeamStatsPanelProps
       icon: Users,
     },
     {
-      label: "Total Sessions",
+      label: "Total Agents",
       value: summary?.total_sessions ?? "—",
       icon: Activity,
     },
@@ -25,7 +25,7 @@ export function CsaTeamStatsPanel({ summary, isLoading }: CsaTeamStatsPanelProps
       icon: MessageSquare,
     },
     {
-      label: "Avg Prompts / Session",
+      label: "Avg Prompts / Agent",
       value: summary?.avg_messages_per_session ?? "—",
       icon: BarChart3,
     },

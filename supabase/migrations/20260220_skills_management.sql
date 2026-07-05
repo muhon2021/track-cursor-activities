@@ -50,18 +50,22 @@ CREATE INDEX IF NOT EXISTS idx_employee_skills_proficiency ON public.employee_sk
 -- Skills
 ALTER TABLE public.skills ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view skills" ON public.skills;
 CREATE POLICY "Authenticated users can view skills" ON public.skills
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage skills" ON public.skills;
 CREATE POLICY "Authenticated users can manage skills" ON public.skills
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- Employee Skills
 ALTER TABLE public.employee_skills ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view employee skills" ON public.employee_skills;
 CREATE POLICY "Authenticated users can view employee skills" ON public.employee_skills
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage employee skills" ON public.employee_skills;
 CREATE POLICY "Authenticated users can manage employee skills" ON public.employee_skills
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 

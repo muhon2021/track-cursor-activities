@@ -1,4 +1,10 @@
 -- Extend match_embeddings to support optional entity_type and user_id filters
+SET search_path TO public, extensions;
+
+-- Replace prior overloads so COMMENT and grants stay unambiguous
+DROP FUNCTION IF EXISTS public.match_embeddings(vector, float, int);
+DROP FUNCTION IF EXISTS public.match_embeddings(vector, float, int, text, uuid, uuid);
+
 CREATE OR REPLACE FUNCTION match_embeddings(
   query_embedding vector(1536),
   match_threshold float DEFAULT 0.7,
@@ -18,6 +24,7 @@ RETURNS TABLE (
   unified_document_id uuid
 )
 LANGUAGE plpgsql
+SET search_path = public, extensions
 AS $$
 BEGIN
   RETURN QUERY
@@ -39,4 +46,4 @@ BEGIN
 END;
 $$;
 
-COMMENT ON FUNCTION match_embeddings IS 'Vector similarity search with optional entity_type and user_id filters';
+COMMENT ON FUNCTION match_embeddings(vector, float, int, text, uuid, uuid) IS 'Vector similarity search with optional entity_type and user_id filters';

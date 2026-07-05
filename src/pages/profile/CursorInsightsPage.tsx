@@ -38,7 +38,7 @@ export default function CursorInsightsPage() {
       } else {
         toast.warning(
           result.message ??
-            "No Cursor sessions found in the selected range. Use Cursor with hooks installed, then try again.",
+            "No Cursor agents found in the selected range. Use Cursor with hooks installed, then try again.",
         );
       }
     } catch (e) {
@@ -95,7 +95,7 @@ export default function CursorInsightsPage() {
               <AlertDescription className="space-y-3">
                 <p>
                   {sessions.length > 0
-                    ? `We found ${sessions.length} session(s) for ${periodLabel} but no audit report yet. Click regenerate to build one.`
+                    ? `We found ${sessions.length} agent(s) for ${periodLabel} but no audit report yet. Click regenerate to build one.`
                     : `No audit for ${periodLabel}. Complete Cursor setup (token + hooks), use Cursor for a few prompts, then regenerate.`}
                 </p>
                 <Button size="sm" onClick={handleRegenerate} disabled={generateInsights.isPending}>

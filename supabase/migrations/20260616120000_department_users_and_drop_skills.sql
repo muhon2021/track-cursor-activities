@@ -22,9 +22,11 @@ CREATE INDEX IF NOT EXISTS idx_department_users_user ON public.department_users(
 
 ALTER TABLE public.department_users ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Authenticated users can view department users" ON public.department_users;
 CREATE POLICY "Authenticated users can view department users" ON public.department_users
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Authenticated users can manage department users" ON public.department_users;
 CREATE POLICY "Authenticated users can manage department users" ON public.department_users
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 

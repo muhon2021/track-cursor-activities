@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useMfaPolicy } from "@/hooks/useMfa";
+import { isHackathonMode } from "@/lib/hackathon";
 
 interface MfaEnrollmentSelf {
   enrolled: boolean;
@@ -10,6 +11,7 @@ interface MfaEnrollmentSelf {
 
 function useOwnMfaStatus() {
   const { user } = useAuth();
+  const hackathon = isHackathonMode();
 
   return useQuery({
     queryKey: ["mfa", "self-status", user?.id],
@@ -22,13 +24,25 @@ function useOwnMfaStatus() {
       if (error) throw error;
       return (data as MfaEnrollmentSelf | null) ?? { enrolled: false, grace_period_ends_at: null };
     },
-    enabled: !!user,
+    enabled: !!user && !hackathon,
   });
 }
 
 export function useMfaGate() {
+  const hackathon = isHackathonMode();
   const { data: policy, isLoading: policyLoading, isError: policyError } = useMfaPolicy();
   const { data: status, isLoading: statusLoading, isError: statusError } = useOwnMfaStatus();
+
+  if (hackathon) {
+    return {
+      isLoading: false,
+      required: false,
+      enrolled: true,
+      graceEndsAt: null,
+      inGracePeriod: false,
+      mustEnrollNow: false,
+    };
+  }
 
   const isLoading = policyLoading || statusLoading;
   const required = policyError ? false : !!policy?.required;

@@ -311,7 +311,7 @@ export function aggregateCsaData(
     .map(([name, count]) => ({
       name,
       sessions: count,
-      description: `${count} session(s) in this project area during the reporting period.`,
+      description: `${count} agent(s) in this project area during the reporting period.`,
     }));
 
   const computed = {
@@ -404,7 +404,7 @@ function buildHeuristicNarrative(
       ],
     },
     how_you_use_cursor: {
-      narrative: `${displayName} used Cursor across ${sessionCount} session(s) with emphasis on ${topIntent.toLowerCase()}. Prompts average ${avgPromptLength} characters.`,
+      narrative: `${displayName} used Cursor across ${sessionCount} agent(s) with emphasis on ${topIntent.toLowerCase()}. Prompts average ${avgPromptLength} characters.`,
       behavior_patterns: [
         `Top task type: ${topIntent}`,
         computed.what_you_work_on.areas[0]

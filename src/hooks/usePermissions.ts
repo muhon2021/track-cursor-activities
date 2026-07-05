@@ -2,6 +2,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { queryKeys } from "@/lib/cache";
+import { HACKATHON_ADMIN_PERMISSIONS, isHackathonMode } from "@/lib/hackathon";
 
 export interface Permission {
   id: string;
@@ -15,6 +16,7 @@ export interface Permission {
 
 export function usePermissions() {
   const { user } = useAuth();
+  const hackathon = isHackathonMode();
 
   const query = useQuery({
     queryKey: queryKeys.admin.permissions,
@@ -25,26 +27,25 @@ export function usePermissions() {
       if (error) throw error;
       return (data ?? []) as string[];
     },
-    enabled: !!user,
+    enabled: !!user && !hackathon,
     staleTime: 1000 * 60 * 5,
     placeholderData: keepPreviousData,
   });
 
-  const hasPermission = (key: string) => {
-    return (query.data ?? []).includes(key);
-  };
+  const permissions = hackathon
+    ? [...HACKATHON_ADMIN_PERMISSIONS]
+    : (query.data ?? []);
 
-  const hasAnyPermission = (keys: string[]) => {
-    const perms = query.data ?? [];
-    return keys.some((k) => perms.includes(k));
-  };
+  const hasPermission = (key: string) => permissions.includes(key);
+
+  const hasAnyPermission = (keys: string[]) => keys.some((k) => permissions.includes(k));
 
   return {
-    permissions: query.data ?? [],
+    permissions,
     hasPermission,
     hasAnyPermission,
-    isLoading: query.isLoading,
-    isSuccess: query.isSuccess,
+    isLoading: hackathon ? false : query.isLoading,
+    isSuccess: hackathon ? true : query.isSuccess,
     refetch: query.refetch,
   };
 }

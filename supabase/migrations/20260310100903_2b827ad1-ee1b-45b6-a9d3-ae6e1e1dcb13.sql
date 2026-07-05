@@ -36,27 +36,32 @@ DROP POLICY IF EXISTS "Users can delete their own conversations" ON public.agent
 DROP POLICY IF EXISTS "Users can delete own conversations" ON public.agent_conversations;
 DROP POLICY IF EXISTS "Admins can view all conversations" ON public.agent_conversations;
 
+DROP POLICY IF EXISTS "Users can view own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can view own conversations"
   ON public.agent_conversations FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can insert own conversations"
   ON public.agent_conversations FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can update own conversations"
   ON public.agent_conversations FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own conversations" ON public.agent_conversations;
 CREATE POLICY "Users can delete own conversations"
   ON public.agent_conversations FOR DELETE
   TO authenticated
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can view all conversations" ON public.agent_conversations;
 CREATE POLICY "Admins can view all conversations"
   ON public.agent_conversations FOR SELECT
   TO authenticated
@@ -96,6 +101,7 @@ DROP POLICY IF EXISTS "Users can delete messages in their conversations" ON publ
 DROP POLICY IF EXISTS "Users can delete messages in own conversations" ON public.agent_messages;
 DROP POLICY IF EXISTS "Admins can view all messages" ON public.agent_messages;
 
+DROP POLICY IF EXISTS "Users can view messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can view messages in own conversations"
   ON public.agent_messages FOR SELECT
   TO authenticated
@@ -104,6 +110,7 @@ CREATE POLICY "Users can view messages in own conversations"
     WHERE c.id = conversation_id AND c.user_id = auth.uid()
   ));
 
+DROP POLICY IF EXISTS "Users can insert messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can insert messages in own conversations"
   ON public.agent_messages FOR INSERT
   TO authenticated
@@ -112,6 +119,7 @@ CREATE POLICY "Users can insert messages in own conversations"
     WHERE c.id = conversation_id AND c.user_id = auth.uid()
   ));
 
+DROP POLICY IF EXISTS "Users can delete messages in own conversations" ON public.agent_messages;
 CREATE POLICY "Users can delete messages in own conversations"
   ON public.agent_messages FOR DELETE
   TO authenticated
@@ -120,6 +128,7 @@ CREATE POLICY "Users can delete messages in own conversations"
     WHERE c.id = conversation_id AND c.user_id = auth.uid()
   ));
 
+DROP POLICY IF EXISTS "Admins can view all messages" ON public.agent_messages;
 CREATE POLICY "Admins can view all messages"
   ON public.agent_messages FOR SELECT
   TO authenticated

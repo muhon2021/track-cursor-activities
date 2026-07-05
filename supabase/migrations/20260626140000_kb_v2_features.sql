@@ -27,18 +27,22 @@ CREATE INDEX IF NOT EXISTS idx_kb_user_search_history_user
 
 ALTER TABLE public.kb_user_search_history ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users read own search history" ON public.kb_user_search_history;
 CREATE POLICY "Users read own search history"
   ON public.kb_user_search_history FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users insert own search history" ON public.kb_user_search_history;
 CREATE POLICY "Users insert own search history"
   ON public.kb_user_search_history FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users delete own search history" ON public.kb_user_search_history;
 CREATE POLICY "Users delete own search history"
   ON public.kb_user_search_history FOR DELETE TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "Admins read all search history" ON public.kb_user_search_history;
 CREATE POLICY "Admins read all search history"
   ON public.kb_user_search_history FOR SELECT TO authenticated
   USING (public.has_role(auth.uid(), 'admin'));
@@ -101,28 +105,34 @@ ALTER TABLE public.kb_slack_channels ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.kb_slack_sync_ledger ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.kb_memory_decay_snapshots ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Admins manage kb_slack_channels" ON public.kb_slack_channels;
 CREATE POLICY "Admins manage kb_slack_channels"
   ON public.kb_slack_channels FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Authenticated read kb_slack_channels" ON public.kb_slack_channels;
 CREATE POLICY "Authenticated read kb_slack_channels"
   ON public.kb_slack_channels FOR SELECT TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Admins manage kb_slack_sync_ledger" ON public.kb_slack_sync_ledger;
 CREATE POLICY "Admins manage kb_slack_sync_ledger"
   ON public.kb_slack_sync_ledger FOR ALL TO authenticated
   USING (public.has_role(auth.uid(), 'admin'))
   WITH CHECK (public.has_role(auth.uid(), 'admin'));
 
+DROP POLICY IF EXISTS "Authenticated read kb_slack_sync_ledger" ON public.kb_slack_sync_ledger;
 CREATE POLICY "Authenticated read kb_slack_sync_ledger"
   ON public.kb_slack_sync_ledger FOR SELECT TO authenticated
   USING (true);
 
+DROP POLICY IF EXISTS "Users read own memory decay snapshots" ON public.kb_memory_decay_snapshots;
 CREATE POLICY "Users read own memory decay snapshots"
   ON public.kb_memory_decay_snapshots FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "Users insert own memory decay snapshots" ON public.kb_memory_decay_snapshots;
 CREATE POLICY "Users insert own memory decay snapshots"
   ON public.kb_memory_decay_snapshots FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());

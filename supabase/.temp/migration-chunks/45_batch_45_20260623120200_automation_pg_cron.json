@@ -1,0 +1,1 @@
+{"name":"batch_45_20260623120200_automation_pg_cron","fileCount":4,"files":["20260623120000_automation_engine.sql","20260623120000_role_builder_v2.sql","20260623120100_automation_rbac_extensions.sql","20260623120200_automation_pg_cron.sql"]}

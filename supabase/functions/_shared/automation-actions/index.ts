@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { routeNotification } from "./notification-router-core.ts";
-import type { WorkflowDefinition, WorkflowNode } from "./automation-types.ts";
+import { routeNotification } from "../notification-router-core.ts";
+import type { WorkflowDefinition, WorkflowNode } from "../automation-types.ts";
 
 export interface ActionContext {
   supabase: SupabaseClient;

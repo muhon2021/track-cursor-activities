@@ -1,3 +1,5 @@
+SET search_path TO public, extensions;
+
 -- ============================================================================
 -- MIGRATION: Meeting Intelligence (Transcripts + Action Items)
 -- Date: 2026-02-26

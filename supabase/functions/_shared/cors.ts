@@ -28,6 +28,9 @@ const ALLOWED_ORIGINS = [
 export function getCorsHeaders(origin: string | null): Record<string, string> {
   // Allow Lovable preview domains
   const isLovablePreview = origin?.endsWith('.lovableproject.com') || origin?.endsWith('.lovable.app');
+
+  // Allow Vercel preview/production deployments
+  const isVercelApp = origin?.endsWith('.vercel.app');
   
   // Allow any sjinnovation.com subdomain
   const isSJInnovationCom = origin?.endsWith('.sjinnovation.com') || origin === 'https://sjinnovation.com';
@@ -38,7 +41,7 @@ export function getCorsHeaders(origin: string | null): Record<string, string> {
   // Allow localhost
   const isLocalhost = origin?.startsWith('http://localhost:') || origin?.startsWith('http://127.0.0.1:');
   
-  const isAllowed = origin && (isLovablePreview || isSJInnovationCom || isSJInnovationUs || isLocalhost);
+  const isAllowed = origin && (isLovablePreview || isVercelApp || isSJInnovationCom || isSJInnovationUs || isLocalhost);
   const allowedOrigin = isAllowed ? origin : ALLOWED_ORIGINS[0];
 
   return {
